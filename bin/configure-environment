@@ -1,0 +1,534 @@
+#!/bin/bash
+clear
+
+SCRIPT_VERSION=0.1
+
+PHP_REQUIRED=5.3.3
+RUBY_REQUIRED=1.9.3p327
+NODE_REQUIRED=0.10.9
+
+#TODO: Functions.  There is a lot of repetition here, it could tidy this script up nicely.
+#TODO: Add option to choose backend type, i.e. PHP, Ruby, Node, Python, etc. and then run Rake, Grunt, Phing, etc. as appropriate.
+#TODO: Check that XCode is installed in the /Applications folder.
+#TODO: Check that XCode's command line tools are installed (otherwise download via CURL and install?).
+#TODO: Check that GCC compiler is installed.  May require that XCode's command line tools are installed.
+
+echo -e "\033[31m
+   ___|                                       |                       
+  |       _ \    __|  __ \    _ \   __|  __|  __|   _ \   __ \    _ \ 
+  |      (   |  |     |   |   __/  |   \__ \  |    (   |  |   |   __/ 
+ \____| \___/  _|    _|  _| \___| _|   ____/ \__| \___/  _|  _| \___|
+\033[0m\n"
+
+
+echo -e "\033[1;4;32mENVIRONMENT CONFIGURATOR $SCRIPT_VERSION\033[0m\n"
+
+#------ ENVIRONMENT CHECKS
+
+echo -e "\033[1;4;31mCHECKING ENVIRONMENT SETTINGS...\033[0m\n"
+
+
+#--- Permissions
+echo -e "\033[1;4;34mChecking User Permissions...\033[0m\n"
+
+if [ "$(whoami)" == "root" ]; then
+  echo "You should not run this script as the root user!"
+  exit 2
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Xcode
+echo "Prompting for XCode installation"
+#open http://itunes.apple.com/us/app/xcode/id448457090?mt=12 #US
+#open https://itunes.apple.com/gb/app/xcode/id497799835?mt=12 #UK
+#https://developer.apple.com/downloads/index.action
+open https://developer.apple.com/xcode/
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Wget
+echo -e "\033[1;4;34mChecking compilers...\033[0m\n"
+
+hash gcc &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'gcc is not installed or is not available on the command line.  Ensure that you have the Xcode command line tools installed.'
+	open https://itunes.apple.com/gb/app/xcode/id497799835?mt=12 #UK
+	exit
+fi
+
+hash g++ &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'g++ is not installed or is not available on the command line.  Ensure that you have the Xcode command line tools installed.'
+	open https://itunes.apple.com/gb/app/xcode/id497799835?mt=12 #UK
+	exit
+fi
+
+hash clang &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'clang is not installed or is not available on the command line.  Ensure that you have the Xcode command line tools installed.'
+	open https://itunes.apple.com/gb/app/xcode/id497799835?mt=12 #UK
+	exit
+fi
+
+hash clang++ &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'clang++ is not installed or is not available on the command line.  Ensure that you have the Xcode command line tools installed.'
+	open https://itunes.apple.com/gb/app/xcode/id497799835?mt=12 #UK
+	exit
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Homebrew
+echo -e "\033[1;4;34mChecking Homebrew...\033[0m\n"
+
+hash brew &> /dev/null
+if [ $? -eq 1 ]; then
+	echo $'Homebrew not found.  Installing...\n'
+	ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+	brew doctor
+else
+
+	HOMEBREW_PATH=$(which brew)
+	HOMEBREW_PATH_MATCH=$(awk 'BEGIN { print index("${PATH}", "${HOMEBREW_PATH}") }')
+	HOMEBREW_CELLAR_PATH=$(brew --cellar)
+	HOMEBREW_UTILITY_PATH='/usr/local/bin'
+	HOMEBREW_UTILITY_PATH_MATCH=$(awk -v PATH=$PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(PATH, HOMEBREW_UTILITY_PATH) }')
+
+ 	if [ ${HOMEBREW_UTILITY_PATH_MATCH} -eq 0 ] ; then
+ 		echo $'Homebrew is installed at the following path:'
+ 		echo $HOMEBREW_UTILITY_PATH$'\n'
+
+ 		echo $'Your Homebrew utility directory is not available on the system path:\n'
+ 		echo $PATH$'\n'
+ 		echo $'Would you like to add the Homebrew utility directory to your system path?'
+
+ 		read CONTINUE
+ 		if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+ 			export PATH=$HOMEBREW_UTILITY_PATH":"$PATH
+ 			echo "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .profile
+ 			echo $'Your PATH environment variable is now set to.'$PATH$'\n'
+ 		else
+ 			echo $'Aborting build process.\n'
+ 			exit	
+ 		fi
+ 	fi
+
+	HOMEBREW_STATUS=$(brew doctor)
+	echo $HOMEBREW_STATUS$'\n'
+
+	echo $'Pruning broken symlinks.\n'
+	brew prune
+
+	echo $'Removing old versions of installed packages.\n'
+	brew cleanup
+
+	echo $'Updating Homebrew.\n'
+	brew update
+
+	echo $'Listing outdated Homebrew formulae.\n'
+	brew outdated
+
+	echo $'Upgrading outdated Homebrew formulae.\n'
+	brew upgrade
+
+	HOMEBREW_STATUS=$(brew doctor)
+
+	if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
+		echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
+		echo $'Please ensure that your system is ready to brew.\n'
+		exit
+	else
+		echo $HOMEBREW_STATUS$'\n'
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Wget
+echo -e "\033[1;4;34mChecking Wget Installation...\033[0m\n"
+
+hash wget &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Wget is not installed or is not available on the command line.  Wget will now be installed.'
+	brew install wget
+else
+	WGET_PATH=$(which wget)
+	WGET_PATH_MATCH=$(awk -v WGET_PATH=$WGET_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(WGET_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${WGET_PATH_MATCH} -eq 0 ] ; then
+		echo $'Your version of Wget was not installed via Homebrew.  This script cannot upgrade your Wget installation if it is out of date.\n'
+ 		echo $'Installing Wget via Homebrew.\n'
+		brew install wget
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Git
+echo -e "\033[1;4;34mChecking Git Installation...\033[0m\n"
+
+hash git &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Git is not installed or is not available on the command line.  Git will now be installed.'
+	brew install git
+	#open http://help.github.com/mac-set-up-git/
+else
+	GIT_USER_NAME=$(git config --global user.name)
+	GIT_USER_EMAIL=$(git config --global user.email)
+
+	GIT_PATH=$(which git)
+	GIT_PATH_MATCH=$(awk -v GIT_PATH=$GIT_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(GIT_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${GIT_PATH_MATCH} -eq 0 ] ; then
+		echo $'Your version of Git was not installed via Homebrew.  This script cannot upgrade your Git installation if it is out of date.\n'
+ 		echo $'Installing Git via Homebrew.\n'
+		brew install git
+		#open http://help.github.com/mac-set-up-git/
+	fi
+	
+	if [ GIT_USER_NAME == '' ] ; then
+		read GIT_USER_NAME_NEW
+		git config --global user.name "${GIT_USER_NAME_NEW}"
+	fi
+	
+	if [ GIT_USER_EMAIL == '' ] ; then
+		read GIT_USER_EMAIL_NEW
+		git config --global user.email "${GIT_USER_EMAIL_NEW}"
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Ruby
+echo -e "\033[1;4;34mChecking Ruby Installation...\033[0m\n"
+
+hash ruby &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Ruby is not installed or is not available on the command line.'
+	brew install ruby
+else
+	RUBY_PATH=$(which ruby)
+	RUBY_PATH_MATCH=$(awk -v RUBY_PATH=$RUBY_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(RUBY_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${RUBY_PATH_MATCH} -eq 0 ] ; then
+ 		echo $'You are not using a version of Ruby installed via Homebrew.  This script cannot upgrade your Ruby installation if it is out of date.\n'
+ 		echo $'Installing Ruby via Homebrew.\n'
+		brew install ruby
+	fi
+
+	RUBY_PATH=$(which ruby) #Update after installation if necessary
+	RUBY_AVAILABLE=$(ruby --version | awk 'match($0,"p"){print substr($2,RSTART0,5)}')
+
+	eval $(awk '
+		BEGIN{
+			print ('$RUBY_AVAILABLE' >= '$RUBY_REQUIRED') ? "CURRENT=true" : "CURRENT=false"
+		}
+	' < /dev/null)
+	
+	if [ $CURRENT != true ]; then
+		echo 'Ruby version required:  ' $RUBY_REQUIRED
+		echo 'Ruby version available: ' $RUBY_AVAILABLE
+
+		echo $'The installed version of Ruby does not meet the requirements.  Aborting the build process.'
+		echo $'Please upgrade Ruby to version '$RUBY_REQUIRED$' or above and retry the build process.\n'
+		exit
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+gem update --system
+gem install compass
+npm install grunt-contrib-compass --save-dev
+
+
+#--- Brewbygems (NOT REQUIRED?)
+# echo -e "\033[1;4;34mChecking Brewbygems Installation...\033[0m\n"
+
+# gem list | grep sass &> /dev/null
+# if [ $? -eq 1 ]; then
+# 	echo 'Brewbygems is not installed or is not available on the command line.  Brewbygems will now be installed.'
+# 	gem install brewbygems
+# fi
+# echo -e "\033[32mOK\033[0m\n"
+
+
+#gem install mysql2
+
+
+#--- node.js
+echo -e "\033[1;4;34mChecking node.js Installation...\033[0m\n"
+
+hash node &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Node is not installed or is not available on the command line.'
+	brew install node
+else
+	NODE_PATH=$(which node)
+	NODE_PATH_MATCH=$(awk -v NODE_PATH=$NODE_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(NODE_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${NODE_PATH_MATCH} -eq 0 ] ; then
+ 		echo $'You are not using a version of Node installed via Homebrew.  This script cannot upgrade your Node installation if it is out of date.\n'
+ 		echo $'Installing Node via Homebrew.\n'
+		brew install node
+	fi
+
+	NODE_PATH=$(which node) #Update after installation if necessary
+	NODE_AVAILABLE=$(node --version | awk 'match($0,"v"){print substr($1,RSTART+1,15)}')
+
+	eval $(awk '
+		BEGIN{
+			print (int('$NODE_AVAILABLE') >= int('$NODE_REQUIRED')) ? "CURRENT=true" : "CURRENT=false"
+		}
+	' < /dev/null)
+	
+	if [ $CURRENT != true ]; then
+		echo 'Node version required:  ' $NODE_REQUIRED
+		echo 'Node version available: ' $NODE_AVAILABLE
+
+		echo $'The installed version of Node does not meet the requirements.  Aborting the build process.'
+		echo $'Please upgrade Node to version '$NODE_REQUIRED$' or above and retry the build process.\n'
+		exit
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#python -V
+
+
+#--- PHP
+echo -e "\033[1;4;34mChecking PHP Installation...\033[0m\n"
+
+hash php &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'PHP is not installed or is not available on the command line.'
+	brew tap homebrew/dupes
+	brew tap josegonzalez/homebrew-php
+	brew options php54
+	brew install php54
+	#brew install php
+else
+	PHP_PATH=$(which php)
+	PHP_PATH_MATCH=$(awk -v PHP_PATH=$PHP_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(PHP_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${PHP_PATH_MATCH} -eq 0 ] ; then
+		echo $'Your version of PHP was not installed via Homebrew.  This script cannot upgrade your PHP installation if it is out of date.\n'
+ 		echo $'Installing PHP via Homebrew.\n'
+		brew tap homebrew/dupes
+		brew tap josegonzalez/homebrew-php
+		brew options php54
+		brew install php54
+		#brew install php
+	fi
+
+	PHP_PATH=$(which php) #Update after installation if necessary
+	PHP_AVAILABLE=$(php --version | awk '/^PHP /{print $2}')
+
+	eval $(awk '
+		BEGIN{
+			print ('$PHP_AVAILABLE' >= '$PHP_REQUIRED') ? "CURRENT=true" : "CURRENT=false"
+		}
+	' < /dev/null)
+	
+	if [ $CURRENT != true ]; then
+		echo 'PHP version required:  ' $PHP_REQUIRED
+		echo 'PHP version available: ' $PHP_AVAILABLE
+
+		echo $'The installed version of PHP does not meet the requirements.  Aborting the build process.'
+		echo $'Please upgrade PHP to version '$PHP_REQUIRED$' or above and retry the build process.'
+		exit
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- RVM
+#echo -e "\033[1;4;34mChecking RVM Installation...\033[0m\n"
+
+#bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
+#echo -e "\033[32mOK\033[0m\n"
+
+
+#--- node.js
+#nvm install 0.6.5
+
+
+#--- NPM
+#brew install npm # OR
+#curl http://npmjs.org/install.sh | sh
+#THEN
+#npm update -g npm
+
+
+#--- SASS
+echo -e "\033[1;4;34mChecking SASS Installation...\033[0m\n"
+
+gem list | grep sass &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'SASS is not installed or is not available on the command line.  SASS will now be installed.'
+	gem install sass
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- LESS
+echo -e "\033[1;4;34mChecking LESS Installation...\033[0m\n"
+
+gem list | grep LEss &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'LESS is not installed or is not available on the command line.  LESS will now be installed.'
+	gem install less
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Vagrant
+echo -e "\033[1;4;34mChecking Vagrant Installation...\033[0m\n"
+
+gem list | grep vagrant &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Vagrant is not installed or is not available on the command line.  Vagrant will now be installed.'
+	gem install vagrant
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+#--- Vagrant
+#vagrant box add base http://files.vagrantup.com/lucid64.box
+#vagrant init
+#vagrant up
+
+
+#--- ievms
+#Download and unpack ievms from https://github.com/xdissent/ievms
+#curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | bash
+#open https://github.com/xdissent/ievms
+
+
+#--- xdebug
+# hash xdebug &> /dev/null
+# if [ $? -eq 1 ]; then
+# 	echo $'Installing xdebug.\n'
+# 	brew install xdebug
+# fi
+# 
+
+
+#--- Composer
+echo -e "\033[1;4;34mChecking Composer Installation...\033[0m\n"
+
+hash composer &> /dev/null
+if [ $? -eq 1 ]; then
+	echo $'Installing Composer.\n'
+	curl -sS https://getcomposer.org/installer | php
+	mv composer.phar /usr/local/bin/composer
+else
+	echo $'Updating Composer.\n'
+	composer self-update
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Grunt
+echo -e "\033[1;4;34mChecking Grunt Installation...\033[0m\n"
+
+hash grunt &> /dev/null
+if [ $? -eq 1 ]; then
+	echo $'Installing Grunt.\n'
+	npm cache clean && npm install -g grunt-cli
+else
+	echo $'Updating Grunt.\n'
+	npm cache clean && npm update -g grunt-cli
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Bower
+echo -e "\033[1;4;34mChecking Bower Installation...\033[0m\n"
+
+hash bower &> /dev/null
+if [ $? -eq 1 ]; then
+	echo $'Installing Bower.\n'
+	npm cache clean && npm install -g bower
+else
+	echo $'Updating Bower.\n'
+	npm cache clean && npm update -g bower
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Yeoman
+echo -e "\033[1;4;34mChecking Yeoman Installation...\033[0m\n"
+
+echo 'Yeoman'
+hash yo &> /dev/null
+if [ $? -eq 1 ]; then
+	echo $'Installing Yeoman.\n'
+	npm cache clean && npm install -g yo
+else
+	echo $'Updating Yeoman.\n'
+	npm cache clean && npm update -g yo
+fi	
+echo -e "\033[32mOK\033[0m\n"
+
+
+#------ BUILD
+echo -e "\033[1;4;31mSTARTING BUILD JOB...\033[0m\n"
+
+echo $'Changing path to active directory.'
+cd `dirname $0`
+
+
+echo $'Running Composer.\n'
+composer install
+
+
+echo $'Running NPM.\n'
+npm install
+npm update
+
+
+#echo $'Running Yeoman.\n'					
+#yo webapp
+
+# echo $'Running Bower.\n'
+# bower cache-clean
+# bower install
+# bower update
+
+
+echo -e "\n\033[1;4;31mBUILD PROCESS FINISHED SUCCESSFULLY!\033[0m\n"
+
+
+# let is_there=0
+# check ()
+# {
+#   if [ $is_there -gt 0 ] ; then
+#      echo "$str has a WA in it"
+#   else
+#      echo "$str has no WA in it"
+#   fi     	
+# }
+# 
+# str="/someplace/WA/01/"
+# is_there=`expr index $str "WA"`
+# check;
+# 
+# 
+# echo $'Would you like to continue anyway?\n'
+# read CONTINUE
+# if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+# 	echo $'Proceeding anyway.\n'
+# else
+# 	echo $'Aborting build process.\n'
+# 	exit		
+# fi
+# 
+# 
+# Prompt for a user name...
+# echo "Please enter your name:";
+# read USERNAME
+# echo $'\nHi '${USERNAME}$', the installer script will now run.\n'
+# echo $'\n--------------------------------------------------\n'
