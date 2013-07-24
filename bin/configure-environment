@@ -4,7 +4,8 @@ clear
 SCRIPT_VERSION=0.1
 
 PHP_REQUIRED=5.3.3
-RUBY_REQUIRED=1.9.3p327
+#RUBY_REQUIRED=1.9.3p327
+RUBY_REQUIRED=2.0.0
 NODE_REQUIRED=0.10.9
 
 #TODO: Functions.  There is a lot of repetition here, it could tidy this script up nicely.
@@ -39,13 +40,16 @@ echo -e "\033[32mOK\033[0m\n"
 
 
 #--- Xcode
-echo "Prompting for XCode installation"
+#echo "Prompting for XCode installation"
+#open https://developer.apple.com/xcode/
 #open http://itunes.apple.com/us/app/xcode/id448457090?mt=12 #US
 #open https://itunes.apple.com/gb/app/xcode/id497799835?mt=12 #UK
 #https://developer.apple.com/downloads/index.action
-open https://developer.apple.com/xcode/
-echo -e "\033[32mOK\033[0m\n"
+#echo -e "\033[32mOK\033[0m\n"
 
+
+# Check path is in correct order
+# Uninstall MacPorts
 
 #--- Wget
 echo -e "\033[1;4;34mChecking compilers...\033[0m\n"
@@ -146,6 +150,52 @@ fi
 echo -e "\033[32mOK\033[0m\n"
 
 
+#--- OpenSSL
+echo -e "\033[1;4;34mChecking OpenSSL Installation...\033[0m\n"
+
+hash openssl &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'OpenSSL is not installed or is not available on the command line.  OpenSSL will now be installed.'
+	brew install wget
+else
+	OPENSSL_PATH=$(which openssl)
+	OPENSSL_PATH_MATCH=$(awk -v OPENSSL_PATH=$OPENSSL_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(OPENSSL_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${OPENSSL_PATH_MATCH} -eq 0 ] ; then
+		echo $'Your version of OpenSSL was not installed via Homebrew.  This script cannot upgrade your OpenSSL installation if it is out of date.\n'
+ 		echo $'Installing OpenSSL via Homebrew.\n'
+		brew install openssl
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Ruby
+echo -e "\033[1;4;34mChecking Ruby Installation...\033[0m\n"
+
+hash ruby &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Ruby is not installed or is not available on the command line.  Ruby will now be installed.'
+	brew install rbenv
+	brew install ruby-build
+	brew unlink ruby
+	brew link ruby
+else
+	RUBY_PATH=$(which ruby)
+	RUBY_PATH_MATCH=$(awk -v RUBY_PATH=$RUBY_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(RUBY_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${RUBY_PATH_MATCH} -eq 0 ] ; then
+		echo $'Your version of Ruby was not installed via Homebrew.  This script cannot upgrade your Ruby installation if it is out of date.\n'
+ 		echo $'Installing Ruby via Homebrew.\n'
+		brew install rbenv
+		brew install ruby-build
+		brew unlink ruby
+		brew link ruby
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
 #--- Wget
 echo -e "\033[1;4;34mChecking Wget Installation...\033[0m\n"
 
@@ -219,7 +269,8 @@ else
 	fi
 
 	RUBY_PATH=$(which ruby) #Update after installation if necessary
-	RUBY_AVAILABLE=$(ruby --version | awk 'match($0,"p"){print substr($2,RSTART0,5)}')
+	#RUBY_AVAILABLE=$(ruby --version | awk 'match($0,"p"){print substr($2,RSTART0,5)}')
+	RUBY_AVAILABLE=$(ruby -e 'print RUBY_VERSION')
 
 	eval $(awk '
 		BEGIN{
