@@ -4,15 +4,11 @@ clear
 SCRIPT_VERSION=0.1
 
 PHP_REQUIRED=5.3.3
-#RUBY_REQUIRED=1.9.3p327
 RUBY_REQUIRED=2.0.0
 NODE_REQUIRED=0.10.9
 
 #TODO: Functions.  There is a lot of repetition here, it could tidy this script up nicely.
 #TODO: Add option to choose backend type, i.e. PHP, Ruby, Node, Python, etc. and then run Rake, Grunt, Phing, etc. as appropriate.
-#TODO: Check that XCode is installed in the /Applications folder.
-#TODO: Check that XCode's command line tools are installed (otherwise download via CURL and install?).
-#TODO: Check that GCC compiler is installed.  May require that XCode's command line tools are installed.
 
 echo -e "\033[31m
    ___|                                       |                       
@@ -48,10 +44,40 @@ echo -e "\033[32mOK\033[0m\n"
 #echo -e "\033[32mOK\033[0m\n"
 
 
-# Check path is in correct order
 # Uninstall MacPorts
+echo -e "\033[1;4;34mChecking MacPorts installation status...\033[0m\n"
 
-#--- Wget
+hash port &> /dev/null
+if [ $? -eq 1 ]; then
+	echo -e "\033[32mMacPorts not found.  Proceeding...\033[0m\n"
+else
+	echo -e "\033[1;4;31mWARNING.\033[0m  This script will attempt to uninstall MacPorts and everything that has been installed via MacPorts.  Would you like to continue anyway?\n"
+	#echo $'WARNING.  This script will attempt to uninstall MacPorts and everything that has been installed via MacPorts.  Would you like to continue anyway?\n'
+	read CONTINUE
+	if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+		echo $'You have been warned!  MacPorts will now be uninstalled.\n'
+		sudo port -f uninstall installed
+		sudo rm -rf /opt/local
+		sudo rm -rf /Applications/DarwinPorts
+		sudo rm -rf /Applications/MacPorts
+		sudo rm -rf /Library/LaunchDaemons/org.macports.*
+		sudo rm -rf /Library/Receipts/DarwinPorts*.pkg
+		sudo rm -rf /Library/Receipts/MacPorts*.pkg
+		sudo rm -rf /Library/StartupItems/DarwinPortsStartup
+		sudo rm -rf /Library/Tcl/darwinports1.0
+		sudo rm -rf /Library/Tcl/macports1.0
+		sudo rm -rf ~/.macports
+	else
+		echo $'Aborting configuration process.\n'
+		exit		
+	fi
+fi
+
+
+# Check path is in correct order
+
+
+#--- Xcode
 echo -e "\033[1;4;34mChecking compilers...\033[0m\n"
 
 hash gcc &> /dev/null
@@ -131,6 +157,9 @@ else
 	echo $'Updating Homebrew.\n'
 	brew update
 
+	echo $'Installing missing dependancies.\n'
+	brew install $(brew missing | cut -d' ' -f2- )
+
 	echo $'Listing outdated Homebrew formulae.\n'
 	brew outdated
 
@@ -150,13 +179,113 @@ fi
 echo -e "\033[32mOK\033[0m\n"
 
 
+#--- libusb
+echo -e "\033[1;4;34mChecking libusb Installation...\033[0m\n"
+
+hash brew list libusb &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'libusb is not installed or is not available on the command line.  libusb will now be installed.'
+	brew install libusb --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- libusb-compat
+echo -e "\033[1;4;34mChecking libusb-compat Installation...\033[0m\n"
+
+hash brew list libusb-compat &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'libusb-compat is not installed or is not available on the command line.  libusb-compat will now be installed.'
+	brew install libusb-compat --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- sane-backends
+echo -e "\033[1;4;34mChecking sane-backends Installation...\033[0m\n"
+
+hash brew list sane-backends &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'sane-backends is not installed or is not available on the command line.  sane-backends will now be installed.'
+	brew install sane-backends --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- jpeg
+echo -e "\033[1;4;34mChecking jpeg Installation...\033[0m\n"
+
+hash brew list jpeg &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'jpeg is not installed or is not available on the command line.  jpeg will now be installed.'
+	brew install jpeg --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- libtiff
+echo -e "\033[1;4;34mChecking libtiff Installation...\033[0m\n"
+
+hash brew list libtiff &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'libtiff is not installed or is not available on the command line.  libtiff will now be installed.'
+	brew install libtiff --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- jasper
+echo -e "\033[1;4;34mChecking jasper Installation...\033[0m\n"
+
+hash brew list jasper &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'jasper is not installed or is not available on the command line.  jasper will now be installed.'
+	brew install jasper --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- libicns
+echo -e "\033[1;4;34mChecking libicns Installation...\033[0m\n"
+
+hash brew list libicns &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'libicns is not installed or is not available on the command line.  libicns will now be installed.'
+	brew install jpeg --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- little-cms
+echo -e "\033[1;4;34mChecking little-cms Installation...\033[0m\n"
+
+hash brew list little-cms &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'little-cms is not installed or is not available on the command line.  little-cms will now be installed.'
+	brew install little-cms --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- little-cms
+echo -e "\033[1;4;34mChecking sane-backends Installation...\033[0m\n"
+
+hash brew list sane-backends &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'sane-backends is not installed or is not available on the command line.  sane-backends will now be installed.'
+	brew install sane-backends --universal
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
 #--- OpenSSL
 echo -e "\033[1;4;34mChecking OpenSSL Installation...\033[0m\n"
 
 hash openssl &> /dev/null
 if [ $? -eq 1 ]; then
 	echo 'OpenSSL is not installed or is not available on the command line.  OpenSSL will now be installed.'
-	brew install wget
+	brew install openssl
+	brew link --force openssl
 else
 	OPENSSL_PATH=$(which openssl)
 	OPENSSL_PATH_MATCH=$(awk -v OPENSSL_PATH=$OPENSSL_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(OPENSSL_PATH, HOMEBREW_UTILITY_PATH) }')
@@ -165,6 +294,7 @@ else
 		echo $'Your version of OpenSSL was not installed via Homebrew.  This script cannot upgrade your OpenSSL installation if it is out of date.\n'
  		echo $'Installing OpenSSL via Homebrew.\n'
 		brew install openssl
+		brew link --force openssl
 	fi
 fi
 echo -e "\033[32mOK\033[0m\n"
@@ -178,8 +308,6 @@ if [ $? -eq 1 ]; then
 	echo 'Ruby is not installed or is not available on the command line.  Ruby will now be installed.'
 	brew install rbenv
 	brew install ruby-build
-	brew unlink ruby
-	brew link ruby
 else
 	RUBY_PATH=$(which ruby)
 	RUBY_PATH_MATCH=$(awk -v RUBY_PATH=$RUBY_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(RUBY_PATH, HOMEBREW_UTILITY_PATH) }')
@@ -189,10 +317,10 @@ else
  		echo $'Installing Ruby via Homebrew.\n'
 		brew install rbenv
 		brew install ruby-build
-		brew unlink ruby
-		brew link ruby
 	fi
 fi
+brew unlink ruby
+brew link ruby
 echo -e "\033[32mOK\033[0m\n"
 
 
@@ -291,8 +419,6 @@ echo -e "\033[32mOK\033[0m\n"
 
 
 gem update --system
-gem install compass
-npm install grunt-contrib-compass --save-dev
 
 
 #--- Brewbygems (NOT REQUIRED?)
@@ -347,7 +473,42 @@ fi
 echo -e "\033[32mOK\033[0m\n"
 
 
-#python -V
+#--- python
+echo -e "\033[1;4;34mChecking Python Installation...\033[0m\n"
+
+hash python &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Python is not installed or is not available on the command line.'
+	brew install python
+else
+	PYTHON_PATH=$(which python)
+	PYTHON_PATH_MATCH=$(awk -v PYTHON_PATH=$PYTHON_PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(PYTHON_PATH, HOMEBREW_UTILITY_PATH) }')
+
+	if [ ${PYTHON_PATH_MATCH} -eq 0 ] ; then
+ 		echo $'You are not using a version of Python installed via Homebrew.  This script cannot upgrade your Python installation if it is out of date.\n'
+ 		echo $'Installing Python via Homebrew.\n'
+		brew install python
+	fi
+
+	PYTHON_PATH=$(which python) #Update after installation if necessary
+	PYTHON_AVAILABLE=$(python --version | awk 'match($0,"v"){print substr($1,RSTART+1,15)}')
+
+	eval $(awk '
+		BEGIN{
+			print (int('$PYTHON_AVAILABLE') >= int('$PYTHON_REQUIRED')) ? "CURRENT=true" : "CURRENT=false"
+		}
+	' < /dev/null)
+	
+	if [ $CURRENT != true ]; then
+		echo 'Python version required:  ' $PYTHON_REQUIRED
+		echo 'Python version available: ' $PYTHON_AVAILABLE
+
+		echo $'The installed version of Python does not meet the requirements.  Aborting the build process.'
+		echo $'Please upgrade Python to version '$PYTHON_REQUIRED$' or above and retry the build process.\n'
+		exit
+	fi
+fi
+echo -e "\033[32mOK\033[0m\n"
 
 
 #--- PHP
@@ -428,10 +589,21 @@ echo -e "\033[32mOK\033[0m\n"
 #--- LESS
 echo -e "\033[1;4;34mChecking LESS Installation...\033[0m\n"
 
-gem list | grep LEss &> /dev/null
+gem list | grep less &> /dev/null
 if [ $? -eq 1 ]; then
 	echo 'LESS is not installed or is not available on the command line.  LESS will now be installed.'
 	gem install less
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Compass
+echo -e "\033[1;4;34mChecking Compass Installation...\033[0m\n"
+
+gem list | grep compass &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'Compass is not installed or is not available on the command line.  Compass will now be installed.'
+	gem install compass
 fi
 echo -e "\033[32mOK\033[0m\n"
 
@@ -522,6 +694,32 @@ else
 	echo $'Updating Yeoman.\n'
 	npm cache clean && npm update -g yo
 fi	
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- JSHint
+echo -e "\033[1;4;34mChecking JSHint Installation...\033[0m\n"
+
+echo 'JSHint'
+hash jshint &> /dev/null
+if [ $? -eq 1 ]; then
+	echo $'Installing JSHint.\n'
+	npm cache clean && npm install -g jshint
+else
+	echo $'Updating JSHint.\n'
+	npm cache clean && npm update -g jshint
+fi	
+echo -e "\033[32mOK\033[0m\n"
+
+
+#--- Vagrant
+echo -e "\033[1;4;34mChecking grunt-contrib-compass Installation...\033[0m\n"
+
+npm list | grep grunt-contrib-compass &> /dev/null
+if [ $? -eq 1 ]; then
+	echo 'grunt-contrib-compass is not installed or is not available on the command line.  grunt-contrib-compass will now be installed.'
+	npm install grunt-contrib-compass -g --save-dev
+fi
 echo -e "\033[32mOK\033[0m\n"
 
 
