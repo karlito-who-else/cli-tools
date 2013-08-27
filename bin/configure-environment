@@ -712,7 +712,7 @@ fi
 echo -e "\033[32mOK\033[0m\n"
 
 
-#--- Vagrant
+#--- Compass
 echo -e "\033[1;4;34mChecking grunt-contrib-compass Installation...\033[0m\n"
 
 npm list | grep grunt-contrib-compass &> /dev/null
