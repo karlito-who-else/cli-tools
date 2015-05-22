@@ -3,4 +3,4 @@ Cornerstone is a simple, skeleton application constructiontool using the Homebre
 
 Run Cornerstone by typing the following command into your command prompt:
 
-source <(curl -s https://raw.githubusercontent.com/karl-wednesday/cornerstone/master/configure.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/karl-wednesday/cornerstone/master/configure.sh)
