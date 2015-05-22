@@ -21,7 +21,13 @@ brew upgrade brew-cask && brew cask cleanup
 brew install rbenv ruby-build
 
 # Add rbenv to bash so that it loads every time you open a terminal
-echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+if grep -Fxq "$(rbenv init -)" ~/.bash_rc
+then
+	# code if found
+else
+	# code if not found
+	echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+fi
 
 # source updated .bash_profile file
 source ~/.bash_profile
@@ -58,7 +64,13 @@ brew install wget
 brew install node
 
 # Set NODE_ENV value in .bash_rc file
-echo 'export NODE_ENV=development' >> ~/.bash_rc
+if grep -Fxq "NODE_ENV" ~/.bash_rc
+then
+	# code if found
+else
+	# code if not found
+	echo 'export NODE_ENV=development' >> ~/.bash_rc
+fi
 
 # Update gem via gem
 gem update --system
@@ -68,15 +80,15 @@ sudo pip install awscli --upgrade
 #pip install awscli --upgrade
 
 # Install Homebrew cask formulae for GUI-based applications
-#brew cask install atom
-#brew cask install cakebrew
-#brew cask install deltawalker
-#brew cask install firefox
-#brew cask install github
-#brew cask install google-chrome
-#brew cask install tower
-#brew cask install transmit
-#brew cask install sequel-pro
-#brew cask install skype
+brew cask install atom
+brew cask install cakebrew
+brew cask install deltawalker
+brew cask install firefox
+brew cask install github
+brew cask install google-chrome
+brew cask install tower
+brew cask install transmit
+brew cask install sequel-pro
+brew cask install skype
 
 #exit

@@ -38,8 +38,13 @@ echo "Please enter your GitHub token followed by [ENTER]:"
 read GITHUB_TOKEN
 
 # Set GITHUB_TOKEN value in .bash_rc file
-echo "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
-#e4346755c17f43460eadc8e416d9a0307d8c62bb
+if grep -Fxq "GITHUB_TOKEN" ~/.bash_rc
+then
+	# code if found
+else
+	# code if not found
+	echo "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
+fi
 
 # Run the confguration file specific to this environment
 source $ENVIRONMENT_SCRIPT
