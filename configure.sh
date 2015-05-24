@@ -41,6 +41,7 @@ read GITHUB_TOKEN
 if grep -Fxq "GITHUB_TOKEN" ~/.bash_rc
 then
 	# code if found
+	echo "GITHUB_TOKEN already present in ${HOME}/.bashrc, skipping."
 else
 	# code if not found
 	echo "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
