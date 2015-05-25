@@ -84,6 +84,7 @@ sudo pip install awscli --upgrade
 brew cask install atom
 brew cask install cakebrew
 brew cask install deltawalker
+brew cask install dropbox
 brew cask install firefox
 brew cask install github
 brew cask install google-chrome
