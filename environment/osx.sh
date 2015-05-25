@@ -57,6 +57,7 @@ brew update && brew upgrade --all
 
 # Install Homebrew formulae for command line applications
 brew install git
+brew install mackup
 brew install shellcheck
 brew install wget
 
