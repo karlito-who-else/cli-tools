@@ -54,13 +54,22 @@ brew tap homebrew/versions
 brew update && brew upgrade --all
 
 # Install Homebrew formulae for command line applications
+brew install awscli
+brew install boot2docker
 brew install git
+brew install gh
+brew install graphicsmagick
+brew install imagemagick
 brew install mackup
+brew install mongodb
+brew install node
+brew install openssl
+brew install php
+brew install mysql
+brew install redis
+brew install ruby
 brew install shellcheck
 brew install wget
-
-# Set up node (including npm)
-brew install node
 
 # Set NODE_ENV value in .bash_rc file
 if grep -Fxq "NODE_ENV" ~/.bash_rc
@@ -75,8 +84,7 @@ fi
 gem update --system
 
 # Install AWS Command Line Interface from pip
-sudo pip install awscli --upgrade
-#pip install awscli --upgrade
+#sudo pip install awscli --upgrade
 
 # Install Homebrew cask formulae for GUI-based applications
 brew cask install atom
