@@ -171,10 +171,10 @@ if [ "$(uname)" == "Darwin" ]; then
 	source ~/.bash_rc
 
 	# Install defined Ruby version via rbenv
-	rbenv install RUBY_VERSION
+	rbenv install $RUBY_VERSION
 
 	# Set defined Ruby version as the default version
-	rbenv global RUBY_VERSION
+	rbenv global $RUBY_VERSION
 
 	# Check environment ruby is using the latest version installed by rbenv
 	ruby -v
