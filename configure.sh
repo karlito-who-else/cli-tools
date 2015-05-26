@@ -105,8 +105,10 @@ if [ "$(uname)" == "Darwin" ]; then
 			 fi
 		 fi
 
-		HOMEBREW_STATUS=$(brew doctor)
-		echo $HOMEBREW_STATUS$'\n'
+		#HOMEBREW_STATUS=$(brew doctor)
+		#echo $HOMEBREW_STATUS$'\n'
+		
+		brew doctor
 
 		echo $'Pruning broken symlinks.\n'
 		brew prune
@@ -125,16 +127,21 @@ if [ "$(uname)" == "Darwin" ]; then
 
 		echo $'Upgrading outdated Homebrew formulae.\n'
 		brew upgrade --all
+		
+		echo $'Unlinking and re-linking all formulas and kegs.\n'
+		ls -1 /usr/local/Library/LinkedKegs | while read line; do echo $line; brew unlink $line; brew link --force $line; done
+		brew list -1 | while read line; do brew unlink $line; brew link $line; done
 
 		HOMEBREW_STATUS=$(brew doctor)
+
+		echo $HOMEBREW_STATUS$'\n'
 
 		if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
 			echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
 			echo $'Please ensure that your system is ready to brew.\n'
-			echo $HOMEBREW_STATUS$'\n'
 			exit
 		else
-			echo $HOMEBREW_STATUS$'\n'
+			echo $'System is ready to brew.\n'
 		fi
 	fi
 	echo -e "\033[32mOK\033[0m\n"
