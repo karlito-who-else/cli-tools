@@ -1,6 +1,17 @@
 #!/bin/sh
 
+RUBY_VERSION=2.2.2
+NODE_VERSION=0.12.1
+
 cd `dirname $0`
+
+echo -e "\033[31m
+			_ _       _              _     
+	___| (_)     | |_ ___   ___ | |___
+ / __| | |_____| __/ _ \ / _ \| / __|
+| (__| | |_____| || (_) | (_) | \__ \
+ \___|_|_|      \__\___/ \___/|_|___/
+\033[0m\n"
 
 #--- Permissions
 echo -e "\033[1;4;34mChecking User Permissions...\033[0m\n"
@@ -135,6 +146,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew upgrade brew-cask && brew cask cleanup
 
 	# Install rbenv and ruby-build via Homebrew
+	#brew install ruby
 	brew install rbenv ruby-build
 
 	# Add rbenv to bash so that it loads every time you open a terminal
@@ -144,17 +156,17 @@ if [ "$(uname)" == "Darwin" ]; then
 		echo -n "rbenv path already present in ${HOME}/.bash_rc, skipping."
 	else
 		# code if not found
-		echo -n "$(rbenv init -)" >> ~/.bash_rc
+		echo -n 'eval "$(rbenv init -)"' >> ~/.bash_rc
 	fi
 
 	# source updated .bash_rc file
 	source ~/.bash_rc
 
-	# Install Ruby 2.1.3 via rbenv
-	rbenv install 2.1.3
+	# Install defined Ruby version via rbenv
+	rbenv install RUBY_VERSION
 
-	# Set Ruby 2.1.3 as the default version
-	rbenv global 2.1.3
+	# Set defined Ruby version as the default version
+	rbenv global RUBY_VERSION
 
 	# Check environment ruby is using the latest version installed by rbenv
 	ruby -v
@@ -188,7 +200,6 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install php
 	brew install mysql
 	brew install redis
-	brew install ruby
 	brew install shellcheck
 	brew install terraform
 	brew install wget
@@ -355,10 +366,18 @@ apm install travis-ci-status
 vagrant plugin install vagrant-hostsupdater
 vagrant plugin install vagrant-triggers
 
+# source updated .bash_rc file
+source ~/.bash_rc
+
+# Check if rbenv was set up
+type rbenv
+
 # List globally installed npm packages
 npm list -g --depth=0
 
 # List installed apm packages
 apm list --installed --bare
+
+open https://itunes.apple.com/en/app/xcode/id497799835?mt=12
 
 exit
