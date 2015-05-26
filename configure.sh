@@ -2,20 +2,17 @@
 
 cd `dirname $0`
 
-echo $""
-
 # Set GITHUB_TOKEN value in .bash_rc file
 if grep -Fq "GITHUB_TOKEN" ~/.bash_rc
 then
-	echo "GITHUB_TOKEN already present in ${HOME}/.bashrc, skipping."
+	echo -n "GITHUB_TOKEN already present in ${HOME}/.bashrc, skipping."
 else
 	# Request user for their GitHub token so that various tools may access their GitHub account.
-	echo "Please enter your GitHub token.  See https://help.github.com/articles/creating-an-access-token-for-command-line-use/ for help."
-	echo $""
-	echo "Please enter your GitHub token followed by [ENTER]:"
+	echo -n "It is recommended that you configure a GitHub token for command line usage.  See https://help.github.com/articles/creating-an-access-token-for-command-line-use/ for information help with gnerating a token."
+	echo -n "Please enter your GitHub token followed by [ENTER]:"
 	read GITHUB_TOKEN
 
-	echo "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
+	echo -n "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -44,6 +41,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	if grep -Fxq "$(rbenv init -)" ~/.bash_rc
 	then
 		# code if found
+		echo -n "rbenv path already present in ${HOME}/.bashrc, skipping."
 	else
 		# code if not found
 		echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
@@ -114,7 +112,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		DISTRIB_ID=`cat LSB_RELEASE | sed -n 's/^DISTRIB_ID=//p'`
 	fi
 
-	echo "DISTRIB_ID: $DISTRIB_ID"
+	echo -n "DISTRIB_ID: $DISTRIB_ID"
 
 	if [[ $DISTRIB_ID = 'Ubuntu' ]]; then
 		#bash ./environment/ubuntu.sh
@@ -132,12 +130,12 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		sudo update_rubygems
 
 	else
-		echo "Please update this file to work with the package manager for this distribution"
+		echo -n "Please update this file to work with the package manager for this distribution"
 	fi
 
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
 	# Do something under Windows NT platform
-	echo "LOL Windows"
+	echo -n "LOL Windows"
 	exit
 fi
 
