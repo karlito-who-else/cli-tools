@@ -86,7 +86,7 @@ if [ "$(uname)" == "Darwin" ]; then
 			 read CONTINUE
 			 if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
 				 export PATH=$HOMEBREW_UTILITY_PATH":"$PATH
-				 echo "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .profile
+				 echo "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .bash_rc
 				 echo $'Your PATH environment variable is now set to.'$PATH$'\n'
 			 else
 				 echo $'Aborting build process.\n'
@@ -144,11 +144,11 @@ if [ "$(uname)" == "Darwin" ]; then
 		echo -n "rbenv path already present in ${HOME}/.bashrc, skipping."
 	else
 		# code if not found
-		echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+		echo "$(rbenv init -)" >> ~/.bash_rc
 	fi
 
-	# source updated .bash_profile file
-	source ~/.bash_profile
+	# source updated .bash_rc file
+	source ~/.bash_rc
 
 	# Install Ruby 2.1.3 via rbenv
 	rbenv install 2.1.3
