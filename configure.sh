@@ -216,6 +216,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
 	brew cask install cakebrew
+	brew cask install caskroom/homebrew-cask/kitematic
 	brew cask install deltawalker
 	brew cask install dropbox
 	brew cask install firefox
