@@ -341,6 +341,7 @@ apm install atom-typescript
 apm install autoprefixer
 apm install caniuse
 apm install color-picker
+apm install csscomb
 apm install emmet
 apm install gulp-helper
 apm install ionic-atom
