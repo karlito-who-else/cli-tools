@@ -176,6 +176,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install Homebrew formulae for command line applications
 	brew install awscli
 	brew install boot2docker
+	brew install bradp/vv/vv
 	brew install git
 	brew install gh
 	brew install graphicsmagick
@@ -348,6 +349,10 @@ apm install polymer-snippets
 apm install project-manager
 apm install tabs-to-spaces
 apm install travis-ci-status
+
+# Install Vagrant plugins via vagrant
+vagrant plugin install vagrant-hostsupdater
+vagrant plugin install vagrant-triggers
 
 # List globally installed npm packages
 npm list -g --depth=0
