@@ -5,7 +5,7 @@ cd `dirname $0`
 echo $""
 
 # Set GITHUB_TOKEN value in .bash_rc file
-if grep -Fxq "GITHUB_TOKEN" ~/.bash_rc
+if grep -Fq "GITHUB_TOKEN" ~/.bash_rc
 then
 	echo "GITHUB_TOKEN already present in ${HOME}/.bashrc, skipping."
 else
