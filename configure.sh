@@ -284,7 +284,7 @@ sudo npm update -g npm
 npm install -g n
 
 # Install latest development version of node using n
-n latest
+sudo n latest
 
 # Check environment node is using the latest version installed by n
 node -v
