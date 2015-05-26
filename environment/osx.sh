@@ -1,7 +1,5 @@
 #!/bin/sh
 
-#cd `dirname $0`
-
 # Install X-Code Command Line Tools
 xcode-select --install
 
@@ -92,5 +90,3 @@ brew cask install tower
 brew cask install transmit
 brew cask install sequel-pro
 brew cask install skype
-
-#exit

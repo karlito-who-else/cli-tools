@@ -51,5 +51,3 @@ n latest
 
 # Check environment node is using the latest version installed by n
 node -v
-
-exit

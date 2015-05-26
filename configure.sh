@@ -6,7 +6,7 @@ echo $""
 
 if [ "$(uname)" == "Darwin" ]; then
 	# Do something under Mac OS X platform
-	ENVIRONMENT_SCRIPT=./environment/osx.sh
+	ENVIRONMENT_SCRIPT_PATH=environment/osx.sh
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
 	LSB_RELEASE=/etc/lsb-release
@@ -18,7 +18,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	echo "DISTRIB_ID: $DISTRIB_ID"
 
 	if [[ $DISTRIB_ID = 'Ubuntu' ]]; then
-		ENVIRONMENT_SCRIPT=./environment/ubuntu.sh
+		ENVIRONMENT_SCRIPT_PATH=environment/ubuntu.sh
 	else
 		echo "Please update this file to work with the package manager for this distribution"
 	fi
@@ -46,6 +46,9 @@ else
 fi
 
 # Run the confguration file specific to this environment
-source $ENVIRONMENT_SCRIPT
 
-source ./environment/posix.sh
+#source ./$ENVIRONMENT_SCRIPT_PATH
+source <(curl -fsSL https://raw.githubusercontent.com/karl-wednesday/cornerstone/master/$ENVIRONMENT_SCRIPT_PATH)
+
+#source ./environment/posix.sh
+source <(curl -fsSL https://raw.githubusercontent.com/karl-wednesday/cornerstone/master/environment/posix.sh)
