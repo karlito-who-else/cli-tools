@@ -380,4 +380,9 @@ apm list --installed --bare
 
 open https://itunes.apple.com/en/app/xcode/id497799835?mt=12
 
+echo -n "Further (manual) configuration:"
+
+echo -n "https://itunes.apple.com/en/app/xcode/id497799835?mt=12"
+echo -n "https://github.com/leogopal/VVV-Dashboard"
+
 exit
