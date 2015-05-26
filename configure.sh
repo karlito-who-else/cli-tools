@@ -2,6 +2,15 @@
 
 cd `dirname $0`
 
+#--- Permissions
+echo -e "\033[1;4;34mChecking User Permissions...\033[0m\n"
+
+if [ "$(whoami)" == "root" ]; then
+	echo "You should not run this script as the root user!"
+	exit 2
+fi
+echo -e "\033[32mOK\033[0m\n"
+
 # Set GITHUB_TOKEN value in .bash_rc file
 if grep -Fq "GITHUB_TOKEN" ~/.bash_rc
 then
@@ -24,11 +33,99 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install X-Code Command Line Tools
 	xcode-select --install
 
-	# Install Homebrew
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	# Uninstall MacPorts
+	echo -e "\033[1;4;34mChecking MacPorts installation status...\033[0m\n"
 
-	# Update and cleanup Homebrew
-	brew update && brew cleanup
+	hash port &> /dev/null
+	if [ $? -eq 1 ]; then
+		echo -e "\033[32mMacPorts not found.  Proceeding...\033[0m\n"
+	else
+		echo -e "\033[1;4;31mWARNING.\033[0m  This script will attempt to uninstall MacPorts and everything that has been installed via MacPorts.  Would you like to continue anyway?\n"
+		#echo $'WARNING.  This script will attempt to uninstall MacPorts and everything that has been installed via MacPorts.  Would you like to continue anyway?\n'
+		read CONTINUE
+		if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+			echo $'You have been warned!  MacPorts will now be uninstalled.\n'
+			sudo port -f uninstall installed
+			sudo rm -rf /opt/local
+			sudo rm -rf /Applications/DarwinPorts
+			sudo rm -rf /Applications/MacPorts
+			sudo rm -rf /Library/LaunchDaemons/org.macports.*
+			sudo rm -rf /Library/Receipts/DarwinPorts*.pkg
+			sudo rm -rf /Library/Receipts/MacPorts*.pkg
+			sudo rm -rf /Library/StartupItems/DarwinPortsStartup
+			sudo rm -rf /Library/Tcl/darwinports1.0
+			sudo rm -rf /Library/Tcl/macports1.0
+			sudo rm -rf ~/.macports
+		else
+			echo $'Aborting configuration process.\n'
+			exit
+		fi
+	fi
+
+	# Configure Homebrew
+	hash brew &> /dev/null
+	if [ $? -eq 1 ]; then
+		echo $'Homebrew not found.  Installing...\n'
+		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		brew doctor
+	else
+		HOMEBREW_PATH=$(which brew)
+		HOMEBREW_PATH_MATCH=$(awk 'BEGIN { print index("${PATH}", "${HOMEBREW_PATH}") }')
+		HOMEBREW_CELLAR_PATH=$(brew --cellar)
+		HOMEBREW_UTILITY_PATH='/usr/local/bin'
+		HOMEBREW_UTILITY_PATH_MATCH=$(awk -v PATH=$PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(PATH, HOMEBREW_UTILITY_PATH) }')
+
+		 if [ ${HOMEBREW_UTILITY_PATH_MATCH} -eq 0 ] ; then
+			 echo $'Homebrew is installed at the following path:'
+			 echo $HOMEBREW_UTILITY_PATH$'\n'
+
+			 echo $'Your Homebrew utility directory is not available on the system path:\n'
+			 echo $PATH$'\n'
+			 echo $'Would you like to add the Homebrew utility directory to your system path?'
+
+			 read CONTINUE
+			 if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+				 export PATH=$HOMEBREW_UTILITY_PATH":"$PATH
+				 echo "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .profile
+				 echo $'Your PATH environment variable is now set to.'$PATH$'\n'
+			 else
+				 echo $'Aborting build process.\n'
+				 exit
+			 fi
+		 fi
+
+		HOMEBREW_STATUS=$(brew doctor)
+		echo $HOMEBREW_STATUS$'\n'
+
+		echo $'Pruning broken symlinks.\n'
+		brew prune
+
+		echo $'Removing old versions of installed packages.\n'
+		brew cleanup
+
+		echo $'Updating Homebrew.\n'
+		brew update
+
+		echo $'Installing missing dependancies.\n'
+		brew install $(brew missing | cut -d' ' -f2- )
+
+		echo $'Listing outdated Homebrew formulae.\n'
+		brew outdated
+
+		echo $'Upgrading outdated Homebrew formulae.\n'
+		brew upgrade
+
+		HOMEBREW_STATUS=$(brew doctor)
+
+		if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
+			echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
+			echo $'Please ensure that your system is ready to brew.\n'
+			exit
+		else
+			echo $HOMEBREW_STATUS$'\n'
+		fi
+	fi
+	echo -e "\033[32mOK\033[0m\n"
 
 	# Install Brew Cask via Homebrew
 	brew install caskroom/cask/brew-cask
@@ -105,6 +202,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install transmit
 	brew cask install sequel-pro
 	brew cask install skype
+	brew cask install virtualbox #ordering!
+	brew cask install vagrant
+	brew cask install vagrant-manager
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
