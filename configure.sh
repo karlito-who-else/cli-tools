@@ -14,7 +14,7 @@ echo -e "\033[32mOK\033[0m\n"
 # Set GITHUB_TOKEN value in .bash_rc file
 if grep -Fq "GITHUB_TOKEN" ~/.bash_rc
 then
-	echo -n "GITHUB_TOKEN already present in ${HOME}/.bashrc, skipping."
+	echo -n "GITHUB_TOKEN already present in ${HOME}/.bash_rc, skipping."
 else
 	# Request user for their GitHub token so that various tools may access their GitHub account.
 	echo -n "It is recommended that you configure a GitHub token for command line usage.  See https://help.github.com/articles/creating-an-access-token-for-command-line-use/ for information help with gnerating a token."
@@ -141,7 +141,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	if grep -Fxq "$(rbenv init -)" ~/.bash_rc
 	then
 		# code if found
-		echo -n "rbenv path already present in ${HOME}/.bashrc, skipping."
+		echo -n "rbenv path already present in ${HOME}/.bash_rc, skipping."
 	else
 		# code if not found
 		echo "$(rbenv init -)" >> ~/.bash_rc
@@ -250,6 +250,7 @@ fi
 if grep -Fxq "NODE_ENV" ~/.bash_rc
 then
 	# code if found
+	echo -n "NODE_ENV already present in ${HOME}/.bash_rc, skipping."
 else
 	# code if not found
 	echo 'export NODE_ENV=development' >> ~/.bash_rc
@@ -359,3 +360,5 @@ npm list -g --depth=0
 
 # List installed apm packages
 apm list --installed --bare
+
+exit
