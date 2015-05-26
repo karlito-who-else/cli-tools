@@ -6,7 +6,7 @@ cd `dirname $0`
 echo -e "\033[1;4;34mChecking User Permissions...\033[0m\n"
 
 if [ "$(whoami)" == "root" ]; then
-	echo "You should not run this script as the root user!"
+	echo -n "You should not run this script as the root user!"
 	exit 2
 fi
 echo -e "\033[32mOK\033[0m\n"
@@ -86,7 +86,7 @@ if [ "$(uname)" == "Darwin" ]; then
 			 read CONTINUE
 			 if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
 				 export PATH=$HOMEBREW_UTILITY_PATH":"$PATH
-				 echo "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .bash_rc
+				 echo -n "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .bash_rc
 				 echo $'Your PATH environment variable is now set to.'$PATH$'\n'
 			 else
 				 echo $'Aborting build process.\n'
@@ -120,7 +120,7 @@ if [ "$(uname)" == "Darwin" ]; then
 		if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
 			echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
 			echo $'Please ensure that your system is ready to brew.\n'
-			echo $HOMEBREW_STATUS$'\n
+			echo $HOMEBREW_STATUS$'\n'
 			exit
 		else
 			echo $HOMEBREW_STATUS$'\n'
@@ -144,7 +144,7 @@ if [ "$(uname)" == "Darwin" ]; then
 		echo -n "rbenv path already present in ${HOME}/.bash_rc, skipping."
 	else
 		# code if not found
-		echo "$(rbenv init -)" >> ~/.bash_rc
+		echo -n "$(rbenv init -)" >> ~/.bash_rc
 	fi
 
 	# source updated .bash_rc file
@@ -253,7 +253,7 @@ then
 	echo -n "NODE_ENV already present in ${HOME}/.bash_rc, skipping."
 else
 	# code if not found
-	echo 'export NODE_ENV=development' >> ~/.bash_rc
+	echo -n "export NODE_ENV=development" >> ~/.bash_rc
 fi
 
 # Update gem via gem
