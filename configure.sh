@@ -15,6 +15,8 @@ else
 	echo -n "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
 fi
 
+echo
+
 if [ "$(uname)" == "Darwin" ]; then
 	# Do something under Mac OS X platform
 	#source ./environment/osx.sh
