@@ -197,6 +197,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install awscli
 	brew install boot2docker
 	brew install bradp/vv/vv
+	brew install docker-compose
 	brew install git
 	brew install gh
 	brew install graphicsmagick
@@ -254,7 +255,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		sudo update_rubygems
 
 		# Install cli utilities via pip
-		pip install awscli --upgrade
+		sudo pip install awscli --upgrade
+		sudo pip install docker-compose --upgrade
 	else
 		echo -n "Please update this file to work with the package manager for this distribution"
 	fi
