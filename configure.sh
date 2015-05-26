@@ -113,7 +113,7 @@ if [ "$(uname)" == "Darwin" ]; then
 		brew outdated
 
 		echo $'Upgrading outdated Homebrew formulae.\n'
-		brew upgrade
+		brew upgrade --all
 
 		HOMEBREW_STATUS=$(brew doctor)
 
