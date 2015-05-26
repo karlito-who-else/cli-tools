@@ -189,6 +189,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install redis
 	brew install ruby
 	brew install shellcheck
+	brew install terraform
 	brew install wget
 
 	# Install Homebrew cask formulae for GUI-based applications
