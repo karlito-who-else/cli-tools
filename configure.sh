@@ -120,6 +120,7 @@ if [ "$(uname)" == "Darwin" ]; then
 		if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
 			echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
 			echo $'Please ensure that your system is ready to brew.\n'
+			echo $HOMEBREW_STATUS$'\n
 			exit
 		else
 			echo $HOMEBREW_STATUS$'\n'
