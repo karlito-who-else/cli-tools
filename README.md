@@ -1,7 +1,7 @@
 # cornerstone
-Cornerstone is a simple, skeleton application constructiontool using the Homebrew, Yeoman and Composer systems.
+Configure OS-X and Ubuntu development environments via Homebrew, apt-get, gem, pip, npm and composer.
 
-Run Cornerstone by typing the following command into your command prompt:
+Run the script by typing the following command into your command prompt:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/karl-wednesday/cornerstone/master/configure.sh)
