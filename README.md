@@ -6,5 +6,5 @@ This script will *not* configure a development hosting environment:  You should 
 Run the configuration script by pasting or typing the following command into your command prompt:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/karl-wednesday/cli-tools/master/configure.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/karlito-who-else/cli-tools/master/configure.sh)
 ```
