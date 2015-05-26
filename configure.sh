@@ -15,7 +15,7 @@ else
 	echo -n "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
 fi
 
-echo
+echo # Insert blank line for legibility
 
 if [ "$(uname)" == "Darwin" ]; then
 	# Do something under Mac OS X platform
@@ -30,13 +30,13 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Update and cleanup Homebrew
 	brew update && brew cleanup
 
-	# Install Brew Cask from Homebrew
+	# Install Brew Cask via Homebrew
 	brew install caskroom/cask/brew-cask
 
 	# Update and cleanup Homebrew Cask
 	brew upgrade brew-cask && brew cask cleanup
 
-	# Install rbenv and ruby-build from Homebrew
+	# Install rbenv and ruby-build via Homebrew
 	brew install rbenv ruby-build
 
 	# Add rbenv to bash so that it loads every time you open a terminal
@@ -52,7 +52,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	# source updated .bash_profile file
 	source ~/.bash_profile
 
-	# Install Ruby 2.1.3 from rbenv
+	# Install Ruby 2.1.3 via rbenv
 	rbenv install 2.1.3
 
 	# Set Ruby 2.1.3 as the default version
@@ -131,6 +131,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		# Update gem via gem
 		sudo update_rubygems
 
+		# Install cli utilities via pip
+		pip install awscli --upgrade
 	else
 		echo -n "Please update this file to work with the package manager for this distribution"
 	fi
@@ -153,12 +155,9 @@ fi
 # Update gem via gem
 gem update --system
 
-# Install cli utilities from gem
+# Install cli utilities via gem
 gem install bundler
 #gem install scss_lint
-
-# Install cli utilities from pip
-#sudo pip install awscli --upgrade
 
 # Clear npm cache
 npm cache clean -f
@@ -166,12 +165,21 @@ npm cache clean -f
 # Update npm via npm
 sudo npm update -g npm
 
-# Install cli utilities globally from npm
-npm install -g bower
-npm install -g browser-sync
+# Install n node version manager via npm
+npm install -g n
+
+# Install latest development version of node using n
+n latest
+
+# Check environment node is using the latest version installed by n
+node -v
+
+# Install cli utilities globally via npm
+#npm install -g bower
+#npm install -g browser-sync
 #npm install -g cordova
 #npm install -g grunt-cli
-npm install -g gulp
+#npm install -g gulp
 #npm install -g harp
 #npm install -g ionic
 #npm install -g imagemin
@@ -180,7 +188,6 @@ npm install -g jscs
 npm install -g jshint
 npm install -g jsonlint
 #npm install -g mocha
-npm install -g n
 #npm install -g node-inspector
 npm install -g npm-check-updates
 #npm install -g npm-update-all
@@ -192,18 +199,9 @@ npm install -g tslint
 npm install -g unused-deps
 npm install -g yo
 
-# Install Yeoman generators from npm
+# Install Yeoman generators via npm
 npm install -g generator-generator
 #npm install -g generator-webapp
-
-# Install latest development version of node using n
-n latest
-
-# Check environment node is using the latest version installed by n
-node -v
-
-# List globally installed npm packages
-npm list -g --depth=0
 
 # Install Composer globally
 mkdir -p /usr/local/bin
@@ -212,3 +210,45 @@ mv composer.phar /usr/local/bin/composer
 
 # Set git to ignore case sensitivity (particularly relevant for OS-X)
 git config core.ignorecase false
+
+# Install Atom packages via apm
+apm install Sublime-Style-Column-Selection
+apm install angularjs
+apm install atom-beautify
+apm install atom-typescript
+apm install autoprefixer
+apm install caniuse
+apm install color-picker
+apm install emmet
+apm install gulp-helper
+apm install ionic-atom
+apm install jscs-fixer
+#apm install jsformat
+apm install language-ejs
+apm install language-html
+apm install linter
+apm install linter-csslint
+apm install linter-htmlhint
+apm install linter-jscs
+apm install linter-jshint
+apm install linter-jsonlint
+apm install linter-less
+apm install linter-php
+apm install linter-scss-lint
+apm install linter-shellcheck
+apm install linter-tidy
+apm install linter-tslint
+apm install merge-conflicts
+apm install minimap
+apm install minimap-selection
+apm install npm-install
+apm install polymer-snippets
+apm install project-manager
+apm install tabs-to-spaces
+apm install travis-ci-status
+
+# List globally installed npm packages
+npm list -g --depth=0
+
+# List installed apm packages
+apm list --installed --bare
