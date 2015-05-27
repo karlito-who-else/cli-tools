@@ -229,6 +229,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install virtualbox #ordering!
 	brew cask install vagrant
 	brew cask install vagrant-manager
+	
+	boot2docker upgrade
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
