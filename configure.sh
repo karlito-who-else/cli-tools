@@ -184,7 +184,6 @@ if [ "$(uname)" == "Darwin" ]; then
 	#easy_install pip
 
 	# brew tap allows you to import formula from other repositories into your Homebrew instance.
-	#brew tap homebrew/apache
 	brew tap homebrew/dupes
 	brew tap homebrew/versions
 
@@ -197,6 +196,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install awscli
 	brew install boot2docker
 	brew install bradp/vv/vv
+	brew install docker
 	brew install docker-compose
 	brew install git
 	brew install gh
@@ -230,7 +230,17 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install vagrant
 	brew cask install vagrant-manager
 	
+	# create boot2docker vm
+	boot2docker init
+	
+	# vm needs to be powered off in order to change these settings without VirtualBox blowing up
+	boot2docker stop > /dev/null 2>&1
+	
+	# Downloading latest boot2docker ISO image
 	boot2docker upgrade
+	
+	# forward default docker ports on vm in order to be able to interact with running containers
+	echo -n 'eval "$(boot2docker shellinit)"' >> ~/.bash_rc
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
