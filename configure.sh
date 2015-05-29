@@ -200,6 +200,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install docker-compose
 	brew install git
 	brew install gh
+	brew install gmp # ruby needs this, not sure why
 	brew install graphicsmagick
 	brew install imagemagick
 	brew install mackup
@@ -295,7 +296,8 @@ gem update --system
 
 # Install cli utilities via gem
 gem install bundler
-#gem install scss_lint
+gem install sass
+gem install scss_lint
 
 # Clear npm cache
 npm cache clean -f
