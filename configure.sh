@@ -208,11 +208,13 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install node
 	brew install openssl
 	brew install php
-	brew install mysql
-	brew install redis
+	#brew install mysql
+	#brew install redis
 	brew install shellcheck
 	brew install terraform
 	brew install wget
+	
+	brew install composer # install here to avoid unsatisfied requirement failure
 
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
@@ -343,10 +345,10 @@ npm install -g yo
 npm install -g generator-generator
 #npm install -g generator-webapp
 
-# Install Composer globally
-mkdir -p /usr/local/bin
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+# Install Composer globally # install via brew
+#mkdir -p /usr/local/bin
+#curl -sS https://getcomposer.org/installer | php
+#mv composer.phar /usr/local/bin/composer
 
 # Set git to ignore case sensitivity (particularly relevant for OS-X)
 git config core.ignorecase false
