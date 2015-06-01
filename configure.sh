@@ -368,7 +368,6 @@ apm install ionic-atom
 apm install jscs-fixer
 #apm install jsformat
 apm install language-ejs
-apm install language-html
 apm install linter
 apm install linter-csslint
 apm install linter-htmlhint
