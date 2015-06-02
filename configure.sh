@@ -358,6 +358,8 @@ apm install Sublime-Style-Column-Selection
 apm install angularjs
 apm install atom-beautify
 apm install atom-typescript
+apm install autocomplete-php
+apm install autocomplete-sass
 apm install autoprefixer
 apm install caniuse
 apm install color-picker
@@ -376,6 +378,7 @@ apm install linter-jshint
 apm install linter-jsonlint
 apm install linter-less
 apm install linter-php
+apm install linter-puppet-lint
 apm install linter-scss-lint
 apm install linter-shellcheck
 apm install linter-tidy
@@ -384,6 +387,7 @@ apm install merge-conflicts
 apm install minimap
 apm install minimap-selection
 apm install npm-install
+apm install php-cs-fixer
 apm install polymer-snippets
 apm install project-manager
 apm install tabs-to-spaces
