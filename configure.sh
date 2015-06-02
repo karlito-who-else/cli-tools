@@ -363,6 +363,7 @@ apm install autocomplete-sass
 apm install autoprefixer
 apm install caniuse
 apm install color-picker
+apm install css-snippets
 apm install csscomb
 apm install emmet
 apm install gulp-helper
