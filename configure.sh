@@ -207,13 +207,22 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install mongodb
 	brew install node
 	brew install openssl
-	brew install php
 	#brew install mysql
 	#brew install redis
 	brew install shellcheck
 	brew install terraform
 	brew install wget
 	
+	# Configure PHP
+	brew install php
+	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
+	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
+	#pear config-set php_ini /usr/local/etc/php/5.6/php.ini
+	#printf '\nAddHandler php5-script .php\nAddType text/html .php' >> /usr/local/etc/apache2/2.4/httpd.conf
+	#perl -p -i -e 's/DirectoryIndex index.html/DirectoryIndex index.php index.html/g' /usr/local/etc/apache2/2.4/httpd.conf
+	#printf '\nexport PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"' >> ~/.profile
+	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_rc
+	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
 	brew install composer # install here to avoid unsatisfied requirement failure
 
 	# Install Homebrew cask formulae for GUI-based applications
