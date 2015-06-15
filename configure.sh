@@ -193,6 +193,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew update && brew upgrade --all
 
 	# Install Homebrew formulae for command line applications
+	brew install autoconf
 	brew install awscli
 	brew install boot2docker
 	brew install bradp/vv/vv
@@ -205,9 +206,11 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install imagemagick
 	brew install mackup
 	brew install mongodb
+	#brew install mysql
 	brew install node
 	brew install openssl
-	#brew install mysql
+	brew install pkg-config
+	brew install readline
 	#brew install redis
 	brew install shellcheck
 	brew install terraform
