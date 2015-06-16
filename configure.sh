@@ -159,6 +159,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install rbenv and ruby-build via Homebrew
 	#brew install ruby
 	brew install rbenv ruby-build
+	
+	# Install XQuartz
+	brew cask install xquartz
 
 	# Add rbenv to bash so that it loads every time you open a terminal
 	if grep -Fxq "$(rbenv init -)" ~/.bash_rc
