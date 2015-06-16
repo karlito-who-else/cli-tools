@@ -41,6 +41,9 @@ echo # Insert blank line for legibility
 if [ "$(uname)" == "Darwin" ]; then
 	# Do something under Mac OS X platform
 	#source ./environment/osx.sh
+	
+	# Show hidden files in Finder
+	defaults write com.apple.finder AppleShowAllFiles YES
 
 	# Install X-Code Command Line Tools
 	xcode-select --install
