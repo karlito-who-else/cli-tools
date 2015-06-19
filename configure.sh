@@ -336,12 +336,13 @@ sudo n latest
 node -v
 
 # Install cli utilities globally via npm
+npm install -g babel-eslint
 #npm install -g bower
 #npm install -g browser-sync
 #npm install -g cordova
-#npm install -g grunt-cli
+npm install -g grunt-cli
 #npm install -g gulp
-#npm install -g harp
+npm install -g harp
 #npm install -g ionic
 #npm install -g imagemin
 #npm install -g istanbul
@@ -351,7 +352,7 @@ npm install -g jsonlint
 #npm install -g mocha
 #npm install -g node-inspector
 npm install -g npm-check-updates
-#npm install -g npm-update-all
+npm install -g npm-update-all
 #npm install -g npmedge
 #npm install -g pm2
 npm install -g scss-lint
