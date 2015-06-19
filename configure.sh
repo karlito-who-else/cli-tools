@@ -352,7 +352,7 @@ npm install -g jsonlint
 #npm install -g mocha
 #npm install -g node-inspector
 npm install -g npm-check-updates
-npm install -g npm-update-all
+#npm install -g npm-update-all
 #npm install -g npmedge
 #npm install -g pm2
 npm install -g scss-lint
