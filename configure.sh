@@ -205,7 +205,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install bradp/vv/vv
 	brew install docker
 	brew install docker-compose
-	brew install ffmpeg
+	brew install faac
+	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
 	brew install git
 	brew install gh
 	brew install gmp # ruby needs this, not sure why
