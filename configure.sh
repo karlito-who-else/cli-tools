@@ -225,7 +225,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install wget
 	
 	# Configure PHP
-	brew install php
+	brew install homebrew/php/php56
 	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
 	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
 	#pear config-set php_ini /usr/local/etc/php/5.6/php.ini
