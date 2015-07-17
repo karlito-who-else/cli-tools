@@ -234,7 +234,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#printf '\nexport PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"' >> ~/.profile
 	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_rc
 	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
-	brew install composer # install here to avoid unsatisfied requirement failure
+	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
@@ -337,13 +337,14 @@ sudo n latest
 node -v
 
 # Install cli utilities globally via npm
+npm install -g babel
 npm install -g babel-eslint
 #npm install -g bower
 #npm install -g browser-sync
 #npm install -g cordova
-npm install -g grunt-cli
+#npm install -g grunt-cli
 #npm install -g gulp
-npm install -g harp
+#npm install -g harp
 #npm install -g ionic
 #npm install -g imagemin
 #npm install -g istanbul
