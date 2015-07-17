@@ -235,6 +235,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_rc
 	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
+	brew install wp-cli
 
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
