@@ -343,6 +343,7 @@ npm install -g babel-eslint
 #npm install -g bower
 #npm install -g browser-sync
 #npm install -g cordova
+npm install -g eslint
 #npm install -g grunt-cli
 #npm install -g gulp
 #npm install -g harp
