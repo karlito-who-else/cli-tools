@@ -6,12 +6,12 @@ NODE_VERSION=0.12.1
 cd `dirname $0`
 
 echo -e "\033[31m
-       .__  .__            __                .__          
+       .__  .__            __                .__
   ____ |  | |__|         _/  |_  ____   ____ |  |   ______
 _/ ___\|  | |  |  ______ \   __\/  _ \ /  _ \|  |  /  ___/
-\  \___|  |_|  | /_____/  |  | (  <_> |  <_> )  |__\___ \ 
+\  \___|  |_|  | /_____/  |  | (  <_> |  <_> )  |__\___ \
  \___  >____/__|          |__|  \____/ \____/|____/____  >
-     \/                                                \/ 
+     \/                                                \/
 \033[0m\n"
 
 #--- Permissions
@@ -41,7 +41,7 @@ echo # Insert blank line for legibility
 if [ "$(uname)" == "Darwin" ]; then
 	# Do something under Mac OS X platform
 	#source ./environment/osx.sh
-	
+
 	# Show hidden files in Finder
 	defaults write com.apple.finder AppleShowAllFiles YES
 
@@ -111,7 +111,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
 		#HOMEBREW_STATUS=$(brew doctor)
 		#echo $HOMEBREW_STATUS$'\n'
-		
+
 		brew doctor
 
 		echo $'Pruning broken symlinks.\n'
@@ -131,7 +131,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
 		echo $'Upgrading outdated Homebrew formulae.\n'
 		brew upgrade --all
-		
+
 		echo $'Unlinking and re-linking all formulas and kegs.\n'
 		ls -1 /usr/local/Library/LinkedKegs | while read line; do echo $line; brew unlink $line; brew link --force $line; done
 		brew list -1 | while read line; do brew unlink $line; brew link $line; done
@@ -159,7 +159,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install rbenv and ruby-build via Homebrew
 	#brew install ruby
 	brew install rbenv ruby-build
-	
+
 	# Install XQuartz
 	brew cask install xquartz
 
@@ -224,7 +224,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install shellcheck
 	brew install terraform
 	brew install wget
-	
+
 	# Configure PHP
 	brew install homebrew/php/php56
 	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
@@ -253,16 +253,19 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install virtualbox #ordering!
 	brew cask install vagrant
 	brew cask install vagrant-manager
-	
+
+  echo -e "[storage]
+  engine = icloud" > ~/.mackup.cfg
+
 	# create boot2docker vm
 	boot2docker init
-	
+
 	# vm needs to be powered off in order to change these settings without VirtualBox blowing up
 	boot2docker stop > /dev/null 2>&1
-	
+
 	# Downloading latest boot2docker ISO image
 	boot2docker upgrade
-	
+
 	# forward default docker ports on vm in order to be able to interact with running containers
 	echo -n 'eval "$(boot2docker shellinit)"' >> ~/.bash_profile
 
