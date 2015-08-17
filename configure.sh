@@ -6,11 +6,12 @@ NODE_VERSION=0.12.1
 cd `dirname $0`
 
 echo -e "\033[31m
-			_ _       _              _     
-	___| (_)     | |_ ___   ___ | |___
- / __| | |_____| __/ _ \ / _ \| / __|
-| (__| | |_____| || (_) | (_) | \__ \
- \___|_|_|      \__\___/ \___/|_|___/
+       .__  .__            __                .__          
+  ____ |  | |__|         _/  |_  ____   ____ |  |   ______
+_/ ___\|  | |  |  ______ \   __\/  _ \ /  _ \|  |  /  ___/
+\  \___|  |_|  | /_____/  |  | (  <_> |  <_> )  |__\___ \ 
+ \___  >____/__|          |__|  \____/ \____/|____/____  >
+     \/                                                \/ 
 \033[0m\n"
 
 #--- Permissions
@@ -40,6 +41,9 @@ echo # Insert blank line for legibility
 if [ "$(uname)" == "Darwin" ]; then
 	# Do something under Mac OS X platform
 	#source ./environment/osx.sh
+	
+	# Show hidden files in Finder
+	defaults write com.apple.finder AppleShowAllFiles YES
 
 	# Install X-Code Command Line Tools
 	xcode-select --install
@@ -105,8 +109,10 @@ if [ "$(uname)" == "Darwin" ]; then
 			 fi
 		 fi
 
-		HOMEBREW_STATUS=$(brew doctor)
-		echo $HOMEBREW_STATUS$'\n'
+		#HOMEBREW_STATUS=$(brew doctor)
+		#echo $HOMEBREW_STATUS$'\n'
+		
+		brew doctor
 
 		echo $'Pruning broken symlinks.\n'
 		brew prune
@@ -125,16 +131,21 @@ if [ "$(uname)" == "Darwin" ]; then
 
 		echo $'Upgrading outdated Homebrew formulae.\n'
 		brew upgrade --all
+		
+		echo $'Unlinking and re-linking all formulas and kegs.\n'
+		ls -1 /usr/local/Library/LinkedKegs | while read line; do echo $line; brew unlink $line; brew link --force $line; done
+		brew list -1 | while read line; do brew unlink $line; brew link $line; done
 
 		HOMEBREW_STATUS=$(brew doctor)
+
+		echo $HOMEBREW_STATUS$'\n'
 
 		if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
 			echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
 			echo $'Please ensure that your system is ready to brew.\n'
-			echo $HOMEBREW_STATUS$'\n'
 			exit
 		else
-			echo $HOMEBREW_STATUS$'\n'
+			echo $'System is ready to brew.\n'
 		fi
 	fi
 	echo -e "\033[32mOK\033[0m\n"
@@ -146,8 +157,11 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew upgrade brew-cask && brew cask cleanup
 
 	# Install rbenv and ruby-build via Homebrew
-	#brew install ruby #use rbenv
+	#brew install ruby
 	brew install rbenv ruby-build
+	
+	# Install XQuartz
+	brew cask install xquartz
 
 	# Add rbenv to bash so that it loads every time you open a terminal
 	if grep -Fxq "$(rbenv init -)" ~/.bash_profile
@@ -156,17 +170,17 @@ if [ "$(uname)" == "Darwin" ]; then
 		echo -n "rbenv path already present in ${HOME}/.bash_profile, skipping."
 	else
 		# code if not found
-		echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+		echo -n 'eval "$(rbenv init -)"' >> ~/.bash_profile
 	fi
 
 	# source updated .bash_profile file
 	source ~/.bash_profile
 
 	# Install defined Ruby version via rbenv
-	rbenv install RUBY_VERSION
+	rbenv install $RUBY_VERSION
 
 	# Set defined Ruby version as the default version
-	rbenv global RUBY_VERSION
+	rbenv global $RUBY_VERSION
 
 	# Check environment ruby is using the latest version installed by rbenv
 	ruby -v
@@ -186,23 +200,43 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew update && brew upgrade --all
 
 	# Install Homebrew formulae for command line applications
+	brew install autoconf
 	brew install awscli
 	brew install boot2docker
 	brew install bradp/vv/vv
+	brew install docker
+	brew install docker-compose
+	brew install faac
+	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
 	brew install git
 	brew install gh
+	brew install gmp # ruby needs this, not sure why
 	brew install graphicsmagick
 	brew install imagemagick
 	brew install mackup
 	brew install mongodb
+	#brew install mysql
 	brew install node
 	brew install openssl
-	brew install php
-	brew install mysql
-	brew install redis
+	brew install pkg-config
+	brew install readline
+	#brew install redis
 	brew install shellcheck
 	brew install terraform
 	brew install wget
+	
+	# Configure PHP
+	brew install homebrew/php/php56
+	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
+	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
+	#pear config-set php_ini /usr/local/etc/php/5.6/php.ini
+	#printf '\nAddHandler php5-script .php\nAddType text/html .php' >> /usr/local/etc/apache2/2.4/httpd.conf
+	#perl -p -i -e 's/DirectoryIndex index.html/DirectoryIndex index.php index.html/g' /usr/local/etc/apache2/2.4/httpd.conf
+	#printf '\nexport PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"' >> ~/.profile
+	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_profile
+	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
+	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
+	brew install wp-cli
 
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
@@ -219,6 +253,18 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install virtualbox #ordering!
 	brew cask install vagrant
 	brew cask install vagrant-manager
+	
+	# create boot2docker vm
+	boot2docker init
+	
+	# vm needs to be powered off in order to change these settings without VirtualBox blowing up
+	boot2docker stop > /dev/null 2>&1
+	
+	# Downloading latest boot2docker ISO image
+	boot2docker upgrade
+	
+	# forward default docker ports on vm in order to be able to interact with running containers
+	echo -n 'eval "$(boot2docker shellinit)"' >> ~/.bash_profile
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
@@ -246,7 +292,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		sudo update_rubygems
 
 		# Install cli utilities via pip
-		pip install awscli --upgrade
+		sudo pip install awscli --upgrade
+		sudo pip install docker-compose --upgrade
 	else
 		echo -n "Please update this file to work with the package manager for this distribution"
 	fi
@@ -272,7 +319,8 @@ gem update --system
 
 # Install cli utilities via gem
 gem install bundler
-#gem install scss_lint
+gem install sass
+gem install scss_lint
 
 # Clear npm cache
 npm cache clean -f
@@ -284,15 +332,18 @@ sudo npm update -g npm
 npm install -g n
 
 # Install latest development version of node using n
-n latest
+sudo n latest
 
 # Check environment node is using the latest version installed by n
 node -v
 
 # Install cli utilities globally via npm
+npm install -g babel
+npm install -g babel-eslint
 #npm install -g bower
 #npm install -g browser-sync
 #npm install -g cordova
+npm install -g eslint
 #npm install -g grunt-cli
 #npm install -g gulp
 #npm install -g harp
@@ -318,10 +369,10 @@ npm install -g yo
 npm install -g generator-generator
 #npm install -g generator-webapp
 
-# Install Composer globally
-mkdir -p /usr/local/bin
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+# Install Composer globally # install via brew
+#mkdir -p /usr/local/bin
+#curl -sS https://getcomposer.org/installer | php
+#mv composer.phar /usr/local/bin/composer
 
 # Set git to ignore case sensitivity (particularly relevant for OS-X)
 git config core.ignorecase false
@@ -331,16 +382,19 @@ apm install Sublime-Style-Column-Selection
 apm install angularjs
 apm install atom-beautify
 apm install atom-typescript
+apm install autocomplete-php
+apm install autocomplete-sass
 apm install autoprefixer
 apm install caniuse
 apm install color-picker
+apm install css-snippets
+apm install csscomb
 apm install emmet
 apm install gulp-helper
 apm install ionic-atom
 apm install jscs-fixer
 #apm install jsformat
 apm install language-ejs
-apm install language-html
 apm install linter
 apm install linter-csslint
 apm install linter-htmlhint
@@ -349,6 +403,7 @@ apm install linter-jshint
 apm install linter-jsonlint
 apm install linter-less
 apm install linter-php
+apm install linter-puppet-lint
 apm install linter-scss-lint
 apm install linter-shellcheck
 apm install linter-tidy
@@ -357,6 +412,7 @@ apm install merge-conflicts
 apm install minimap
 apm install minimap-selection
 apm install npm-install
+apm install php-cs-fixer
 apm install polymer-snippets
 apm install project-manager
 apm install tabs-to-spaces
@@ -379,5 +435,10 @@ npm list -g --depth=0
 apm list --installed --bare
 
 open https://itunes.apple.com/en/app/xcode/id497799835?mt=12
+
+echo -n "Further (manual) configuration:"
+
+echo -n "https://itunes.apple.com/en/app/xcode/id497799835?mt=12"
+echo -n "https://github.com/leogopal/VVV-Dashboard"
 
 exit
