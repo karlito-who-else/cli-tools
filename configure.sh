@@ -1,18 +1,38 @@
 #!/bin/sh
 
+RUBY_VERSION=2.2.2
+NODE_VERSION=0.12.1
+
 cd `dirname $0`
 
-# Set GITHUB_TOKEN value in .bash_rc file
-if grep -Fq "GITHUB_TOKEN" ~/.bash_rc
+echo -e "\033[31m
+			_ _       _              _     
+	___| (_)     | |_ ___   ___ | |___
+ / __| | |_____| __/ _ \ / _ \| / __|
+| (__| | |_____| || (_) | (_) | \__ \
+ \___|_|_|      \__\___/ \___/|_|___/
+\033[0m\n"
+
+#--- Permissions
+echo -e "\033[1;4;34mChecking User Permissions...\033[0m\n"
+
+if [ "$(whoami)" == "root" ]; then
+	echo -n "You should not run this script as the root user!"
+	exit 2
+fi
+echo -e "\033[32mOK\033[0m\n"
+
+# Set GITHUB_TOKEN value in .bash_profile file
+if grep -Fq "GITHUB_TOKEN" ~/.bash_profile
 then
-	echo -n "GITHUB_TOKEN already present in ${HOME}/.bashrc, skipping."
+	echo -n "GITHUB_TOKEN already present in ${HOME}/.bash_profile, skipping."
 else
 	# Request user for their GitHub token so that various tools may access their GitHub account.
 	echo -n "It is recommended that you configure a GitHub token for command line usage.  See https://help.github.com/articles/creating-an-access-token-for-command-line-use/ for information help with gnerating a token."
 	echo -n "Please enter your GitHub token followed by [ENTER]:"
 	read GITHUB_TOKEN
 
-	echo -n "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_rc
+	echo -n "export GITHUB_TOKEN='$GITHUB_TOKEN'" >> ~/.bash_profile
 fi
 
 echo # Insert blank line for legibility
@@ -24,11 +44,100 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install X-Code Command Line Tools
 	xcode-select --install
 
-	# Install Homebrew
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	# Uninstall MacPorts
+	echo -e "\033[1;4;34mChecking MacPorts installation status...\033[0m\n"
 
-	# Update and cleanup Homebrew
-	brew update && brew cleanup
+	hash port &> /dev/null
+	if [ $? -eq 1 ]; then
+		echo -e "\033[32mMacPorts not found.  Proceeding...\033[0m\n"
+	else
+		echo -e "\033[1;4;31mWARNING.\033[0m  This script will attempt to uninstall MacPorts and everything that has been installed via MacPorts.  Would you like to continue anyway?\n"
+		#echo $'WARNING.  This script will attempt to uninstall MacPorts and everything that has been installed via MacPorts.  Would you like to continue anyway?\n'
+		read CONTINUE
+		if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+			echo $'You have been warned!  MacPorts will now be uninstalled.\n'
+			sudo port -f uninstall installed
+			sudo rm -rf /opt/local
+			sudo rm -rf /Applications/DarwinPorts
+			sudo rm -rf /Applications/MacPorts
+			sudo rm -rf /Library/LaunchDaemons/org.macports.*
+			sudo rm -rf /Library/Receipts/DarwinPorts*.pkg
+			sudo rm -rf /Library/Receipts/MacPorts*.pkg
+			sudo rm -rf /Library/StartupItems/DarwinPortsStartup
+			sudo rm -rf /Library/Tcl/darwinports1.0
+			sudo rm -rf /Library/Tcl/macports1.0
+			sudo rm -rf ~/.macports
+		else
+			echo $'Aborting configuration process.\n'
+			exit
+		fi
+	fi
+
+	# Configure Homebrew
+	hash brew &> /dev/null
+	if [ $? -eq 1 ]; then
+		echo $'Homebrew not found.  Installing...\n'
+		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		brew doctor
+	else
+		HOMEBREW_PATH=$(which brew)
+		HOMEBREW_PATH_MATCH=$(awk 'BEGIN { print index("${PATH}", "${HOMEBREW_PATH}") }')
+		HOMEBREW_CELLAR_PATH=$(brew --cellar)
+		HOMEBREW_UTILITY_PATH='/usr/local/bin'
+		HOMEBREW_UTILITY_PATH_MATCH=$(awk -v PATH=$PATH -v HOMEBREW_UTILITY_PATH=$HOMEBREW_UTILITY_PATH 'BEGIN { print index(PATH, HOMEBREW_UTILITY_PATH) }')
+
+		 if [ ${HOMEBREW_UTILITY_PATH_MATCH} -eq 0 ] ; then
+			 echo $'Homebrew is installed at the following path:'
+			 echo $HOMEBREW_UTILITY_PATH$'\n'
+
+			 echo $'Your Homebrew utility directory is not available on the system path:\n'
+			 echo $PATH$'\n'
+			 echo $'Would you like to add the Homebrew utility directory to your system path?'
+
+			 read CONTINUE
+			 if [ $CONTINUE = 'yes' ] || [ $CONTINUE = 'y' ]; then
+				 export PATH=$HOMEBREW_UTILITY_PATH":"$PATH
+				 echo -n "export PATH=\"${HOMEBREW_UTILITY_PATH}:$PATH\"" >> .bash_profile
+				 echo $'Your PATH environment variable is now set to.'$PATH$'\n'
+			 else
+				 echo $'Aborting build process.\n'
+				 exit
+			 fi
+		 fi
+
+		HOMEBREW_STATUS=$(brew doctor)
+		echo $HOMEBREW_STATUS$'\n'
+
+		echo $'Pruning broken symlinks.\n'
+		brew prune
+
+		echo $'Removing old versions of installed packages.\n'
+		brew cleanup
+
+		echo $'Updating Homebrew.\n'
+		brew update
+
+		echo $'Installing missing dependancies.\n'
+		brew install $(brew missing | cut -d' ' -f2- )
+
+		echo $'Listing outdated Homebrew formulae.\n'
+		brew outdated
+
+		echo $'Upgrading outdated Homebrew formulae.\n'
+		brew upgrade --all
+
+		HOMEBREW_STATUS=$(brew doctor)
+
+		if [ "$HOMEBREW_STATUS" != 'Your system is ready to brew.' ]; then
+			echo $'You have an error or warning with your Homebrew installation that must be resolved before this build process can continue.'
+			echo $'Please ensure that your system is ready to brew.\n'
+			echo $HOMEBREW_STATUS$'\n'
+			exit
+		else
+			echo $HOMEBREW_STATUS$'\n'
+		fi
+	fi
+	echo -e "\033[32mOK\033[0m\n"
 
 	# Install Brew Cask via Homebrew
 	brew install caskroom/cask/brew-cask
@@ -37,13 +146,14 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew upgrade brew-cask && brew cask cleanup
 
 	# Install rbenv and ruby-build via Homebrew
+	#brew install ruby #use rbenv
 	brew install rbenv ruby-build
 
 	# Add rbenv to bash so that it loads every time you open a terminal
-	if grep -Fxq "$(rbenv init -)" ~/.bash_rc
+	if grep -Fxq "$(rbenv init -)" ~/.bash_profile
 	then
 		# code if found
-		echo -n "rbenv path already present in ${HOME}/.bashrc, skipping."
+		echo -n "rbenv path already present in ${HOME}/.bash_profile, skipping."
 	else
 		# code if not found
 		echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
@@ -52,11 +162,11 @@ if [ "$(uname)" == "Darwin" ]; then
 	# source updated .bash_profile file
 	source ~/.bash_profile
 
-	# Install Ruby 2.1.3 via rbenv
-	rbenv install 2.1.3
+	# Install defined Ruby version via rbenv
+	rbenv install RUBY_VERSION
 
-	# Set Ruby 2.1.3 as the default version
-	rbenv global 2.1.3
+	# Set defined Ruby version as the default version
+	rbenv global RUBY_VERSION
 
 	# Check environment ruby is using the latest version installed by rbenv
 	ruby -v
@@ -78,6 +188,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install Homebrew formulae for command line applications
 	brew install awscli
 	brew install boot2docker
+	brew install bradp/vv/vv
 	brew install git
 	brew install gh
 	brew install graphicsmagick
@@ -89,8 +200,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install php
 	brew install mysql
 	brew install redis
-	brew install ruby
 	brew install shellcheck
+	brew install terraform
 	brew install wget
 
 	# Install Homebrew cask formulae for GUI-based applications
@@ -105,6 +216,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install transmit
 	brew cask install sequel-pro
 	brew cask install skype
+	brew cask install virtualbox #ordering!
+	brew cask install vagrant
+	brew cask install vagrant-manager
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
@@ -143,13 +257,14 @@ elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
 	exit
 fi
 
-# Set NODE_ENV value in .bash_rc file
-if grep -Fxq "NODE_ENV" ~/.bash_rc
+# Set NODE_ENV value in .bash_profile file
+if grep -Fxq "NODE_ENV" ~/.bash_profile
 then
 	# code if found
+	echo -n "NODE_ENV already present in ${HOME}/.bash_profile, skipping."
 else
 	# code if not found
-	echo 'export NODE_ENV=development' >> ~/.bash_rc
+	echo -n "export NODE_ENV=development" >> ~/.bash_profile
 fi
 
 # Update gem via gem
@@ -247,8 +362,22 @@ apm install project-manager
 apm install tabs-to-spaces
 apm install travis-ci-status
 
+# Install Vagrant plugins via vagrant
+vagrant plugin install vagrant-hostsupdater
+vagrant plugin install vagrant-triggers
+
+# source updated .bash_profile file
+source ~/.bash_profile
+
+# Check if rbenv was set up
+type rbenv
+
 # List globally installed npm packages
 npm list -g --depth=0
 
 # List installed apm packages
 apm list --installed --bare
+
+open https://itunes.apple.com/en/app/xcode/id497799835?mt=12
+
+exit
