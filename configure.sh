@@ -3,6 +3,15 @@
 RUBY_VERSION=2.2.2
 NODE_VERSION=0.12.1
 
+MACKUP_CONFIG_CORE="[storage]
+engine = icloud"
+
+MACKUP_CONFIG_SSH="[application]
+name = SSH
+
+[configuration_files]
+.ssh"
+
 cd `dirname $0`
 
 echo -e "\033[31m
@@ -254,8 +263,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install vagrant
 	brew cask install vagrant-manager
 
-  echo -e "[storage]
-  engine = icloud" > ~/.mackup.cfg
+  echo "$MACKUP_CONFIG_CORE" > ~/.mackup.cfg
+  echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
 
 	# create boot2docker vm
 	boot2docker init
@@ -356,6 +365,7 @@ npm install -g eslint
 npm install -g jscs
 npm install -g jshint
 npm install -g jsonlint
+npm install -g manifoldjs
 #npm install -g mocha
 #npm install -g node-inspector
 npm install -g npm-check-updates
