@@ -436,6 +436,8 @@ apm install travis-ci-status
 vagrant plugin install vagrant-hostsupdater
 vagrant plugin install vagrant-triggers
 
+curl https://sdk.cloud.google.com | bash
+
 # source updated .bash_profile file
 source ~/.bash_profile
 
@@ -454,5 +456,8 @@ echo -n "Further (manual) configuration:"
 
 echo -n "https://itunes.apple.com/en/app/xcode/id497799835?mt=12"
 echo -n "https://github.com/leogopal/VVV-Dashboard"
+
+# Restart shell, see https://cloud.google.com/sdk/#Quick_Start
+exec -l $SHELL
 
 exit
