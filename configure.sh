@@ -373,6 +373,7 @@ npm install -g npm-check-updates
 #npm install -g npm-update-all
 #npm install -g npmedge
 #npm install -g pm2
+npm install -g polylint
 npm install -g scss-lint
 #npm install -g strongloop
 npm install -g tslint
