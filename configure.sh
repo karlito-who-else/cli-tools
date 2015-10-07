@@ -405,6 +405,7 @@ apm install color-picker
 apm install css-snippets
 apm install csscomb
 apm install emmet
+apm install file-icons
 apm install gulp-helper
 apm install ionic-atom
 apm install jscs-fixer
