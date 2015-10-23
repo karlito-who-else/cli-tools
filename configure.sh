@@ -395,7 +395,7 @@ npm install -g generator-generator
 git config core.ignorecase false
 
 # Install Atom packages via apm
-apm install Sublime-Style-Column-Selection
+apm install atom-change-case
 apm install angularjs
 apm install atom-beautify
 apm install atom-typescript
@@ -446,6 +446,7 @@ apm install project-manager
 apm install tabs-to-spaces
 apm install travis-ci-status
 apm install symbols-tree-view
+apm install Sublime-Style-Column-Selection
 
 # Install Vagrant plugins via vagrant
 vagrant plugin install vagrant-hostsupdater
