@@ -426,6 +426,13 @@ apm install linter-tidy
 apm install linter-tslint
 apm install merge-conflicts
 apm install minimap
+apm install minimap-bookmarks
+apm install minimap-codeglance
+apm install minimap-find-and-replace
+apm install minimap-git-diff
+apm install minimap-highlight-selected
+apm install minimap-linter
+apm install minimap-pigments
 apm install minimap-selection
 apm install npm-install
 apm install php-cs-fixer
