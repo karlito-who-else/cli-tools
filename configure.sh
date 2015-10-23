@@ -218,8 +218,10 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install faac
 	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
 	brew install git
+	brew install git-flow-avh
 	brew install gh
 	brew install gmp # ruby needs this, not sure why
+	#brew install gnu-getopt
 	brew install graphicsmagick
 	brew install imagemagick
 	brew install mackup
@@ -401,6 +403,8 @@ apm install autocomplete-php
 apm install autocomplete-sass
 apm install autoprefixer
 apm install caniuse
+apm install clipboard-history
+apm install code-links
 apm install color-picker
 apm install css-snippets
 apm install csscomb
@@ -424,6 +428,7 @@ apm install linter-scss-lint
 apm install linter-shellcheck
 apm install linter-tidy
 apm install linter-tslint
+apm install local-history
 apm install merge-conflicts
 apm install minimap
 apm install minimap-bookmarks
@@ -440,6 +445,7 @@ apm install polymer-snippets
 apm install project-manager
 apm install tabs-to-spaces
 apm install travis-ci-status
+apm install symbols-tree-view
 
 # Install Vagrant plugins via vagrant
 vagrant plugin install vagrant-hostsupdater
