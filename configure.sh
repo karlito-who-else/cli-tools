@@ -404,7 +404,7 @@ apm install autocomplete-sass
 apm install autoprefixer
 apm install caniuse
 apm install clipboard-history
-apm install code-links
+#apm install code-links
 apm install color-picker
 apm install css-snippets
 apm install csscomb
@@ -412,6 +412,7 @@ apm install emmet
 apm install file-icons
 apm install gulp-helper
 apm install ionic-atom
+apm install js-hyperclick
 apm install jscs-fixer
 #apm install jsformat
 apm install language-ejs
