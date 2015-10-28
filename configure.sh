@@ -333,8 +333,8 @@ gem update --system
 
 # Install cli utilities via gem
 gem install bundler
-gem install sass
-gem install scss_lint
+#gem install sass
+#gem install scss_lint
 
 # Clear npm cache
 npm cache clean -f
@@ -424,7 +424,8 @@ apm install linter-jsonlint
 apm install linter-less
 apm install linter-php
 apm install linter-puppet-lint
-apm install linter-scss-lint
+apm install linter-sass-lint
+#apm install linter-scss-lint
 apm install linter-shellcheck
 apm install linter-tidy
 apm install linter-tslint
