@@ -451,6 +451,9 @@ apm install travis-ci-status
 apm install symbols-tree-view
 apm install Sublime-Style-Column-Selection
 
+# Update Atom packages via apm
+apm update
+
 # Install Vagrant plugins via vagrant
 vagrant plugin install vagrant-hostsupdater
 vagrant plugin install vagrant-triggers
