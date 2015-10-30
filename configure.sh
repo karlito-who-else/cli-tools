@@ -355,8 +355,8 @@ node -v
 # Install cli utilities globally via npm
 npm install -g babel
 npm install -g babel-eslint
-#npm install -g bower
-npm install -g bower-check-updates
+npm install -g bower
+#npm install -g bower-check-updates
 #npm install -g browser-sync
 #npm install -g cordova
 npm install -g eslint
