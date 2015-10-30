@@ -170,7 +170,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install rbenv ruby-build
 
 	# Install XQuartz
-	brew cask install xquartz
+	#brew cask install xquartz
+	brew install Caskroom/cask/xquartz
 
 	# Add rbenv to bash so that it loads every time you open a terminal
 	if grep -Fxq "$(rbenv init -)" ~/.bash_profile
