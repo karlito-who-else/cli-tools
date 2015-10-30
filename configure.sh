@@ -212,10 +212,10 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install Homebrew formulae for command line applications
 	brew install autoconf
 	brew install awscli
-	brew install boot2docker
+	#brew install boot2docker
 	brew install bradp/vv/vv
-	brew install docker
-	brew install docker-compose
+	#brew install docker
+	#brew install docker-compose
 	brew install faac
 	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
 	brew install git
@@ -254,6 +254,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install atom
 	brew cask install cakebrew
 	brew cask install deltawalker
+	brew cask install dockertoolbox
 	brew cask install dropbox
 	brew cask install firefox
 	brew cask install github
@@ -262,7 +263,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install transmit
 	brew cask install sequel-pro
 	brew cask install skype
-	brew cask install virtualbox #ordering!
+	#brew cask install virtualbox #ordering!
 	brew cask install vagrant
 	brew cask install vagrant-manager
 
