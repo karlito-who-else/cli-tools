@@ -344,10 +344,10 @@ npm cache clean -f
 sudo npm update -g npm
 
 # Install n node version manager via npm
-npm install -g n
+#npm install -g n
 
 # Install latest development version of node using n
-sudo n latest
+#sudo n latest
 
 # Check environment node is using the latest version installed by n
 node -v
