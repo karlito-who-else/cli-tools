@@ -271,13 +271,13 @@ if [ "$(uname)" == "Darwin" ]; then
   echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
 
 	# create boot2docker vm
-	boot2docker init
+	#boot2docker init
 
 	# vm needs to be powered off in order to change these settings without VirtualBox blowing up
-	boot2docker stop > /dev/null 2>&1
+	#boot2docker stop > /dev/null 2>&1
 
 	# Downloading latest boot2docker ISO image
-	boot2docker upgrade
+	#boot2docker upgrade
 
 	# forward default docker ports on vm in order to be able to interact with running containers
 	echo -n 'eval "$(boot2docker shellinit)"' >> ~/.bash_profile
