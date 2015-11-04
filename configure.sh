@@ -417,6 +417,7 @@ apm install ionic-atom
 apm install js-hyperclick
 apm install jscs-fixer
 #apm install jsformat
+apm install language-docker
 apm install language-ejs
 apm install linter
 apm install linter-csslint
