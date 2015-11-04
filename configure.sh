@@ -280,7 +280,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#boot2docker upgrade
 
 	# forward default docker ports on vm in order to be able to interact with running containers
-	echo -n 'eval "$(boot2docker shellinit)"' >> ~/.bash_profile
+	#echo -n 'eval "$(boot2docker shellinit)"' >> ~/.bash_profile
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# Do something under Linux platform
@@ -361,8 +361,8 @@ npm install -g bower
 #npm install -g browser-sync
 #npm install -g cordova
 npm install -g eslint
-#npm install -g grunt-cli
-#npm install -g gulp
+npm install -g grunt-cli
+npm install -g gulp
 #npm install -g harp
 #npm install -g ionic
 #npm install -g imagemin
@@ -393,7 +393,7 @@ npm install -g generator-generator
 #curl -sS https://getcomposer.org/installer | php
 #mv composer.phar /usr/local/bin/composer
 
-# Set git to ignore case sensitivity (particularly relevant for OS-X)
+# Set git to respect case sensitivity (particularly relevant for OS-X)
 git config core.ignorecase false
 
 # Install Atom packages via apm
