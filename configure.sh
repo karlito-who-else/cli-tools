@@ -452,6 +452,7 @@ apm install tabs-to-spaces
 apm install travis-ci-status
 apm install symbols-tree-view
 apm install Sublime-Style-Column-Selection
+apm install atom-wallaby
 
 # Update Atom packages via apm
 apm update
