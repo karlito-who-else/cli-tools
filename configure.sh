@@ -1,7 +1,7 @@
 #!/bin/sh
 
 RUBY_VERSION=2.2.2
-NODE_VERSION=0.12.1
+NODE_VERSION=5.0.0
 
 MACKUP_CONFIG_CORE="[storage]
 engine = icloud"
