@@ -250,6 +250,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 	brew install wp-cli
 
+	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
+	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
+
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
 	brew cask install cakebrew
