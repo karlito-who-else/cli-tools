@@ -224,6 +224,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install gh
 	brew install gmp # ruby needs this, not sure why
 	#brew install gnu-getopt
+	brew install gpg
 	brew install graphicsmagick
 	brew install imagemagick
 	brew install mackup
