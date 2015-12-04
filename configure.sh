@@ -219,6 +219,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install faac
 	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
 	brew install git
+	brew install git-extras
 	brew install git-flow-avh
 	brew install git-lfs
 	brew install gh
