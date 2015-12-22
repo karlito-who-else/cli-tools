@@ -165,9 +165,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Update and cleanup Homebrew Cask
 	brew upgrade brew-cask && brew cask cleanup
 
-	# Install rbenv and ruby-build via Homebrew
-	#brew install ruby
-	brew install rbenv ruby-build
+	# Install rbenv and gem update --system-build via Homebrew
+	#brew install gem update --system
+	brew install rbenv gem update --system-build
 
 	# Install XQuartz
 	#brew cask install xquartz
@@ -343,6 +343,7 @@ gem update --system
 gem install bundler
 #gem install sass
 #gem install scss_lint
+gem install travis -v 1.8.0 --no-rdoc --no-ri
 
 # Clear npm cache
 npm cache clean -f
