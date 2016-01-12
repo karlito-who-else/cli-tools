@@ -336,6 +336,11 @@ else
 	echo -n "export NODE_ENV=development" >> ~/.bash_profile
 fi
 
+# Install Composer globally # install via brew
+#mkdir -p /usr/local/bin
+#curl -sS https://getcomposer.org/installer | php
+#mv composer.phar /usr/local/bin/composer
+
 # Update gem via gem
 gem update --system
 
@@ -344,6 +349,9 @@ gem install bundler
 #gem install sass
 #gem install scss_lint
 gem install travis -v 1.8.0 --no-rdoc --no-ri
+
+# Install php-cs-fixer via Composer
+composer global require fabpot/php-cs-fixer
 
 # Clear npm cache
 npm cache clean -f
@@ -394,11 +402,6 @@ npm install -g yo
 # Install Yeoman generators via npm
 npm install -g generator-generator
 #npm install -g generator-webapp
-
-# Install Composer globally # install via brew
-#mkdir -p /usr/local/bin
-#curl -sS https://getcomposer.org/installer | php
-#mv composer.phar /usr/local/bin/composer
 
 # Set git to respect case sensitivity (particularly relevant for OS-X)
 git config core.ignorecase false
