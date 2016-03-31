@@ -237,6 +237,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install readline
 	#brew install redis
 	brew install shellcheck
+	brew install ssh-copy-id
 	brew install terraform
 	brew install wget
 
