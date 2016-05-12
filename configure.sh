@@ -461,6 +461,7 @@ apm install minimap-pigments
 apm install minimap-selection
 apm install npm-install
 apm install php-cs-fixer
+apm install pigments
 apm install polymer-snippets
 apm install project-manager
 apm install tabs-to-spaces
