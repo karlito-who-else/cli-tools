@@ -212,12 +212,14 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install Homebrew formulae for command line applications
 	brew install autoconf
 	brew install awscli
+	brew install batik
 	#brew install boot2docker
 	brew install bradp/vv/vv
 	#brew install docker
 	#brew install docker-compose
 	brew install faac
 	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
+	brew install fontforge
 	brew install git
 	brew install git-extras
 	brew install git-flow-avh
@@ -239,6 +241,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install shellcheck
 	brew install ssh-copy-id
 	brew install terraform
+	brew install ttf2eot
 	brew install wget
 
 	# Configure PHP
