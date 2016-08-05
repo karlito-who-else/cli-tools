@@ -376,7 +376,7 @@ sudo npm update -g npm
 node -v
 
 # Install cli utilities globally via npm
-npm install -g babel
+npm install -g babel-cli
 npm install -g babel-eslint
 npm install -g bower
 #npm install -g bower-check-updates
