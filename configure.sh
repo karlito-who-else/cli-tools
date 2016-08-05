@@ -245,7 +245,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install wget
 
 	# Configure PHP
-	brew install homebrew/php/php56
+	brew install php56
+	brew install php71
 	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
 	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
 	#pear config-set php_ini /usr/local/etc/php/5.6/php.ini
@@ -254,6 +255,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#printf '\nexport PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"' >> ~/.profile
 	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_profile
 	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
+	brew install php-version
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 	brew install wp-cli
 
@@ -265,7 +267,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install cakebrew
 	brew cask install deltawalker
 	brew cask install dockertoolbox
-	brew cask install dropbox
+	#brew cask install dropbox
 	brew cask install firefox
 	brew cask install github
 	brew cask install google-chrome
@@ -349,10 +351,10 @@ fi
 gem update --system
 
 # Install cli utilities via gem
-gem install bundler
+#gem install bundler
 #gem install sass
 #gem install scss_lint
-gem install travis -v 1.8.0 --no-rdoc --no-ri
+gem install travis -v 1.8.2 --no-rdoc --no-ri
 
 # Install php-cs-fixer via Composer
 composer global require fabpot/php-cs-fixer
@@ -397,7 +399,8 @@ npm install -g npm-check-updates
 #npm install -g npm-update-all
 #npm install -g npmedge
 #npm install -g pm2
-npm install -g polylint
+#npm install -g polylint
+npm install -g polymer-cli
 #npm install -g scss-lint
 #npm install -g strongloop
 npm install -g tslint
@@ -474,8 +477,8 @@ apm install atom-wallaby
 apm update
 
 # Install Vagrant plugins via vagrant
-vagrant plugin install vagrant-hostsupdater
-vagrant plugin install vagrant-triggers
+#vagrant plugin install vagrant-hostsupdater
+#vagrant plugin install vagrant-triggers
 
 curl https://sdk.cloud.google.com | bash
 
