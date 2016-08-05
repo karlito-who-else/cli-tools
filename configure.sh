@@ -231,7 +231,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install graphicsmagick
 	brew install imagemagick
 	brew install mackup
-	brew install mongodb
+	#brew install mongodb
 	#brew install mysql
 	brew install node
 	brew install openssl
