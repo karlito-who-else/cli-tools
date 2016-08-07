@@ -220,6 +220,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install imagemagick
 	brew install mackup
 	brew install mariadb
+	brew install mas
 	#brew install mongodb
 	#brew install mysql
 	brew install node
@@ -276,6 +277,24 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install vagrant
 	brew cask install vagrant-manager
 	brew cask install vlc
+
+	mas install 497799835 #Xcode
+	mas install 824171161 #Affinity Designer
+	mas install 409183694 #Keynote
+	mas install 425424353 #The Unarchiver
+	mas install 405580712 #StuffIt Expander
+	mas install 412448059 #ForkLift
+	mas install 463541543 #Gemini
+	mas install 411246225 #Caffeine
+	mas install 408981434 #iMovie
+	mas install 803453959 #Slack
+	mas install 409201541 #Pages
+	mas install 407963104 #Pixelmator
+	mas install 963642514 #Duplicate Photos Fixer Pro
+	mas install 682658836 #GarageBand
+	mas install 404010395 #TextWrangler
+	mas install 409203825 #Numbers
+	mas install 897118787 #Shazam
 
 	#echo "$MACKUP_CONFIG_CORE" > ~/.mackup.cfg
   	#echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
