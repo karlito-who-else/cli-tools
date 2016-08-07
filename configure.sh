@@ -267,6 +267,10 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Allow VHost access
 	sudo bash -c 'echo "pass in proto tcp from any to any port 80" >> /etc/pf.conf'
 
+	# Load Apache config from Mackup
+	sudo mv /etc/apache2/httpd.conf /etc/apache2/httpd.bak
+	echo "Include /Users/karl/.apache2/httpd.conf" | sudo tee -a /etc/apache2/httpd.conf > /dev/null
+
 	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
 	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
 
