@@ -160,40 +160,41 @@ if [ "$(uname)" == "Darwin" ]; then
 	echo -e "\033[32mOK\033[0m\n"
 
 	# Install Brew Cask via Homebrew
-	brew install caskroom/cask/brew-cask
+	#brew install caskroom/cask/brew-cask
+	brew tap caskroom/cask
 
 	# Update and cleanup Homebrew Cask
-	brew upgrade brew-cask && brew cask cleanup
-
-	# Install rbenv and gem update --system-build via Homebrew
-	#brew install gem update --system
-	brew install rbenv gem update --system-build
+	#brew upgrade brew-cask && brew cask cleanup
 
 	# Install XQuartz
 	#brew cask install xquartz
 	brew install Caskroom/cask/xquartz
 
+	# Install rbenv and gem update --system-build via Homebrew
+	#brew install gem update --system
+	#brew install rbenv gem update --system-build
+
 	# Add rbenv to bash so that it loads every time you open a terminal
 	if grep -Fxq "$(rbenv init -)" ~/.bash_profile
 	then
 		# code if found
-		echo -n "rbenv path already present in ${HOME}/.bash_profile, skipping."
+		#echo -n "rbenv path already present in ${HOME}/.bash_profile, skipping."
 	else
 		# code if not found
-		echo -n 'eval "$(rbenv init -)"' >> ~/.bash_profile
+		#echo -n 'eval "$(rbenv init -)"' >> ~/.bash_profile
 	fi
 
 	# source updated .bash_profile file
 	source ~/.bash_profile
 
 	# Install defined Ruby version via rbenv
-	rbenv install $RUBY_VERSION
+	#rbenv install $RUBY_VERSION
 
 	# Set defined Ruby version as the default version
-	rbenv global $RUBY_VERSION
+	#rbenv global $RUBY_VERSION
 
 	# Check environment ruby is using the latest version installed by rbenv
-	ruby -v
+	#ruby -v
 
 	# Install pip package management system which is used to install and manage software packages written in Python.
 	sudo easy_install pip
