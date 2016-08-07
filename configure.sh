@@ -269,12 +269,16 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install dockertoolbox
 	#brew cask install dropbox
 	brew cask install firefox
+	brew cask install flux
 	brew cask install github
 	brew cask install google-chrome
-	brew cask install tower
-	brew cask install transmit
+	brew cask install iexplorer
+	brew cask install openemu
 	brew cask install sequel-pro
 	brew cask install skype
+	brew cask install steam
+	brew cask install tower
+	brew cask install transmit
 	#brew cask install virtualbox #ordering!
 	brew cask install vagrant
 	brew cask install vagrant-manager
