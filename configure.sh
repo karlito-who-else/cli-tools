@@ -246,7 +246,10 @@ if [ "$(uname)" == "Darwin" ]; then
 
 	# Configure PHP
 	brew install php56
+	brew unlink php56
 	brew install php71
+	brew unlink php71
+	brew install brew-php-switcher
 	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
 	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
 	#pear config-set php_ini /usr/local/etc/php/5.6/php.ini
@@ -255,7 +258,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#printf '\nexport PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"' >> ~/.profile
 	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_profile
 	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
-	brew install php-version
+	#brew install php-version
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 	brew install wp-cli
 
