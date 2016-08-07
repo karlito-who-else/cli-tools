@@ -266,6 +266,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install flux
 	brew cask install github
 	brew cask install google-chrome
+	brew cask install google-cloud-sdk
 	brew cask install iexplorer
 	brew cask install openemu
 	brew cask install sequel-pro
