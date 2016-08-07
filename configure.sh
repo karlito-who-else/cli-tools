@@ -252,6 +252,21 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 	brew install wp-cli
 
+	# Add .dev entries to dnsmasq
+	echo 'address=/.dev/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
+	
+	# Configure launch daemon for dnsmasque
+	#sudo cp -v $(brew --prefix dnsmasq)/homebrew.mxcl.dnsmasq.plist /Library/LaunchDaemons
+	#sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+	sudo launchctl start homebrew.mxcl.dnsmasq
+
+	# CREATE A new DNS resolver instance
+	sudo mkdir -v /etc/resolver
+	sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/dev'
+
+	# Allow VHost access
+	sudo bash -c 'echo "pass in proto tcp from any to any port 80" >> /etc/pf.conf'
+
 	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
 	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
 
