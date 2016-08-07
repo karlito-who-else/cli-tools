@@ -256,7 +256,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install atom
 	brew cask install cakebrew
 	brew cask install deltawalker
-	brew cask install dockertoolbox
+	#brew cask install dockertoolbox
+	brew cask install docker-toolbox
 	#brew cask install dropbox
 	brew cask install firefox
 	brew cask install flux
