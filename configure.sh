@@ -274,6 +274,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#brew cask install virtualbox #ordering!
 	brew cask install vagrant
 	brew cask install vagrant-manager
+	brew cask install vlc
 
 	#echo "$MACKUP_CONFIG_CORE" > ~/.mackup.cfg
   	#echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
