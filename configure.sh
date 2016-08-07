@@ -353,7 +353,8 @@ gem update --system
 gem install travis -v 1.8.2 --no-rdoc --no-ri
 
 # Install php-cs-fixer via Composer
-composer global require fabpot/php-cs-fixer
+#composer global require fabpot/php-cs-fixer
+composer global require friendsofphp/php-cs-fixer
 echo -n "export PATH=\"$PATH:$HOME/.composer/vendor/bin\"" >> .bash_profile
 
 # Clear npm cache
