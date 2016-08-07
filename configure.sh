@@ -251,6 +251,13 @@ if [ "$(uname)" == "Darwin" ]; then
 	#brew install php-version
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 	brew install wp-cli
+	
+	# Copy the default configuration file.
+	cp $(brew list dnsmasq | grep /dnsmasq.conf.example$) /usr/local/etc/dnsmasq.conf
+	# Copy the daemon configuration file into place.
+	sudo cp $(brew list dnsmasq | grep /homebrew.mxcl.dnsmasq.plist$) /Library/LaunchDaemons/
+	# Start Dnsmasq automatically.
+	sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 
 	# Add .dev entries to dnsmasq
 	echo 'address=/.dev/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
