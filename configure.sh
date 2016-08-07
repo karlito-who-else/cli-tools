@@ -202,6 +202,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install batik
 	#brew install boot2docker
 	brew install bradp/vv/vv
+	brew install dnsmasq
 	#brew install docker
 	#brew install docker-compose
 	brew install faac
@@ -274,8 +275,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install vagrant
 	brew cask install vagrant-manager
 
-  echo "$MACKUP_CONFIG_CORE" > ~/.mackup.cfg
-  echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
+	#echo "$MACKUP_CONFIG_CORE" > ~/.mackup.cfg
+  	#echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
 
 	# create boot2docker vm
 	#boot2docker init
