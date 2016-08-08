@@ -467,6 +467,8 @@ apm install atom-typescript
 apm install autocomplete-php
 apm install autocomplete-sass
 apm install autoprefixer
+apm install build
+apm install build-gulp
 apm install caniuse
 apm install clipboard-history
 #apm install code-links
