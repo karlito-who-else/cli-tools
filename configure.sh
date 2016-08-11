@@ -296,6 +296,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install google-cloud-sdk
 	brew cask install hyperdock
 	brew cask install iexplorer
+	brew cask install mysqlworkbench
 	brew cask install openemu
 	brew cask install sequel-pro
 	brew cask install skype
