@@ -430,6 +430,7 @@ npm install -g bower
 #npm install -g bower-check-updates
 #npm install -g browser-sync
 #npm install -g cordova
+npm install -g csscomb
 npm install -g eslint
 npm install -g grunt-cli
 npm install -g gulp
@@ -437,6 +438,7 @@ npm install -g gulp
 #npm install -g ionic
 #npm install -g imagemin
 #npm install -g istanbul
+npm install -g js-beautify
 npm install -g jscs
 npm install -g jshint
 npm install -g jsonlint
@@ -449,9 +451,11 @@ npm install -g npm-check-updates
 #npm install -g pm2
 #npm install -g polylint
 npm install -g polymer-cli
+npm install -g prettydiff
 #npm install -g scss-lint
 #npm install -g strongloop
 npm install -g tslint
+npm install -g typescript-formatter
 npm install -g unused-deps
 npm install -g yo
 
