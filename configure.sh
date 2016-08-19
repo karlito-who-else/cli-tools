@@ -469,8 +469,10 @@ git config core.ignorecase false
 # Install Atom packages via apm
 apm install atom-change-case
 apm install angularjs
+apm install atom-autocomplete-wordpress-hooks
 apm install atom-beautify
 apm install atom-typescript
+apm install atom-wallaby
 apm install autocomplete-php
 apm install autocomplete-sass
 apm install autoprefixer
@@ -480,6 +482,7 @@ apm install caniuse
 apm install clipboard-history
 #apm install code-links
 apm install color-picker
+apm install console-log
 apm install css-snippets
 apm install csscomb
 apm install emmet
@@ -525,7 +528,8 @@ apm install tabs-to-spaces
 apm install travis-ci-status
 apm install symbols-tree-view
 apm install Sublime-Style-Column-Selection
-apm install atom-wallaby
+apm install wordpress-api
+apm install zp-acf-snippets
 
 # Update Atom packages via apm
 apm update
