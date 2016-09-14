@@ -159,6 +159,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	fi
 	echo -e "\033[32mOK\033[0m\n"
 
+	# Homebrew Notifier - Notifies you when homebrew package updates are available
+	curl -fsS https://raw.githubusercontent.com/grantovich/homebrew-notifier/master/install.sh | sh
+
 	# Install Brew Cask via Homebrew
 	#brew install caskroom/cask/brew-cask
 	brew tap caskroom/cask
