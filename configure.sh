@@ -257,23 +257,30 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install wp-cli
 	
 	# Copy the default configuration file.
-	cp $(brew list dnsmasq | grep /dnsmasq.conf.example$) /usr/local/etc/dnsmasq.conf
+	cp $(brew list dnsmasq | grep /dnsmasq.conf.example$) $(brew --prefix)/etc/dnsmasq.conf
+	
+	# Add entry for .dev TLD
+	echo "local=/dev/" >> $(brew --prefix)/etc/dnsmasq.conf
+	echo "address=/.dev/127.0.0.1" >> $(brew --prefix)/etc/dnsmasq.conf
+	
 	# Copy the daemon configuration file into place.
 	sudo cp $(brew list dnsmasq | grep /homebrew.mxcl.dnsmasq.plist$) /Library/LaunchDaemons/
+
 	# Start Dnsmasq automatically.
 	sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
-
-	# Add .dev entries to dnsmasq
-	echo 'address=/.dev/127.0.0.1' >> $(brew --prefix)/etc/dnsmasq.conf
-	
-	# Configure launch daemon for dnsmasque
-	#sudo cp -v $(brew --prefix dnsmasq)/homebrew.mxcl.dnsmasq.plist /Library/LaunchDaemons
-	#sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+		
+	# Start dnsmasque
+	#sudo launchctl stop homebrew.mxcl.dnsmasq
 	sudo launchctl start homebrew.mxcl.dnsmasq
 
 	# CREATE A new DNS resolver instance
 	sudo mkdir -v /etc/resolver
 	sudo bash -c 'echo "nameserver 127.0.0.1" > /etc/resolver/dev'
+	sudo bash -c 'echo "domain dev" > /etc/resolver/dev'
+	sudo bash -c 'echo "search_order 1" > /etc/resolver/dev'
+
+	# Flush DNS cache
+	dscacheutil -flushcache
 
 	# Allow VHost access
 	sudo bash -c 'echo "pass in proto tcp from any to any port 80" >> /etc/pf.conf'
@@ -284,6 +291,26 @@ if [ "$(uname)" == "Darwin" ]; then
 
 	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
 	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
+
+	# Create logs for default virtual host
+	mkdir -p ~/Sites/_logs
+	touch ~/Sites/_logs/access.log
+	touch ~/Sites/_logs/error.log
+
+	# Create default site
+	mkdir -p ~/Sites/default_site
+	sudo bash -c 'echo "<html lang="en"><head><meta charset="utf-8" /><title>Default site</title></head><body><h1>Default site</h1></body></html>" >> /etc/pf.conf'
+
+	# Test and restart Apache
+	sudo apachectl -tS
+	sudo apachectl restart
+
+	# Show configuration
+	dig default_site.dev @127.0.0.1
+	host default_site.dev 127.0.0.1
+	ping -c 1 default_site.dev
+
+	scutil --dns
 
 	# Install Homebrew cask formulae for GUI-based applications
 	brew cask install atom
