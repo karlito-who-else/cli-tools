@@ -227,6 +227,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#brew install mongodb
 	#brew install mysql
 	brew install node
+	brew install nodeenv
 	brew install openssl
 	brew install homebrew/php/php-cs-fixer
 	brew install pkg-config
