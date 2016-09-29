@@ -229,7 +229,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install node
 	brew install nodeenv
 	brew install openssl
-	brew install homebrew/php/php-cs-fixer
+	#brew install homebrew/php/php-cs-fixer
 	brew install pkg-config
 	brew install readline
 	#brew install redis
