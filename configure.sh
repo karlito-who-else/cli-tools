@@ -255,6 +255,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
 	#brew install php-version
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
+	brew install homebrew/php/php-cs-fixer
 	brew install wp-cli
 	
 	# Copy the default configuration file.
