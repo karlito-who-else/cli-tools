@@ -480,6 +480,7 @@ npm install -g bower
 #npm install -g cordova
 npm install -g csscomb
 npm install -g eslint
+npm install -g firebase-tools
 npm install -g grunt-cli
 npm install -g gulp
 #npm install -g harp
