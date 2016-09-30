@@ -231,7 +231,6 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install node
 	brew install nodeenv
 	brew install openssl
-	#brew install homebrew/php/php-cs-fixer
 	brew install pkg-config
 	brew install readline
 	#brew install redis
@@ -242,11 +241,18 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install wget
 
 	# Configure PHP
+	brew tap homebrew/homebrew-php
+
 	brew install php56
 	brew unlink php56
+
 	brew install php71
 	brew unlink php71
+
 	brew install brew-php-switcher
+
+	brew-php-switcher 71
+
 	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
 	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
 	#pear config-set php_ini /usr/local/etc/php/5.6/php.ini
@@ -256,10 +262,13 @@ if [ "$(uname)" == "Darwin" ]; then
 	#echo 'export PATH="$(brew --prefix php56)/bin:$PATH"' >> ~/.bash_profile
 	#ln -sfv /usr/local/opt/php56/*.plist ~/Library/LaunchAgents
 	#brew install php-version
+
 	brew install homebrew/php/composer # install here to avoid unsatisfied requirement failure
 	brew install homebrew/php/php-cs-fixer
 	brew install wp-cli
 	
+	# Configure Dnsmasq
+
 	# Copy the default configuration file.
 	cp $(brew list dnsmasq | grep /dnsmasq.conf.example$) $(brew --prefix)/etc/dnsmasq.conf
 	
