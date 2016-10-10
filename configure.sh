@@ -240,8 +240,12 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install ttf2eot
 	brew install wget
 
+	# Configure Apache
+	brew tap homebrew/apache
+
 	# Configure PHP
-	brew tap homebrew/homebrew-php
+#	brew tap homebrew/homebrew-php
+	brew tap homebrew/php
 
 	brew install php56
 	brew unlink php56
