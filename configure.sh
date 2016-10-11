@@ -334,6 +334,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	echo "Include /Users/karl/.apache2/extra/httpd-vhosts.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
 	echo "Include /Users/karl/.apache2/other/php5.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
 
+	echo "LoadModule php5_module /usr/local/opt/php56/libexec/apache2/libphp5.so" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
+	echo "LoadModule php7_module /usr/local/opt/php71/libexec/apache2/libphp7.so" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
+
 	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
 	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
 
