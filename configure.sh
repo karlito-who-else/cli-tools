@@ -329,16 +329,14 @@ if [ "$(uname)" == "Darwin" ]; then
 	sed -i.bak "s|#LoadModule rewrite_module libexec/mod_rewrite.so|LoadModule rewrite_module libexec/mod_rewrite.so|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
 	sed -i.bak "s|AllowOverride none|AllowOverride all|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
 	sed -i.bak "s|/usr/local/var/www/htdocs|/Users/karl/Sites|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
-	sed -i.bak "s|DirectoryIndex index.html|DirectoryIndex index.html index.php|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	#sed -i.bak "s|DirectoryIndex index.html|DirectoryIndex index.html index.php|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
 	#sed -i.bak "s|#Include /usr/local/etc/apache2/2.4/extra/httpd-vhosts.conf|Include /Users/karl/.apache2/extra/httpd-vhosts.conf|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
-	echo "Include /Users/karl/.apache2/extra/httpd-vhosts.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
-	echo "Include /Users/karl/.apache2/other/php5.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
-
 	sed -i.bak "s|LoadModule php|#LoadModule php|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
-
 	echo "LoadModule php5_module /usr/local/opt/php56/libexec/apache2/libphp5.so" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
 	echo "LoadModule php7_module /usr/local/opt/php71/libexec/apache2/libphp7.so" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
-
+	echo "Include /Users/karl/.apache2/extra/httpd-vhosts.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
+	echo "Include /Users/karl/.apache2/other/php.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
+	
 	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
 	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
 
