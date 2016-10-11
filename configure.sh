@@ -223,6 +223,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install gpg
 	brew install graphicsmagick
 	brew install imagemagick
+	brew install lynx
 	brew install mackup
 	brew install mariadb
 	brew install mas
@@ -240,18 +241,31 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install ttf2eot
 	brew install wget
 
-	# Configure Apache
+	# Tap Apache
 	brew tap homebrew/apache
 
-	# Configure PHP
+	# Tap PHP
 #	brew tap homebrew/homebrew-php
 	brew tap homebrew/php
 
-	brew install php56
-	brew unlink php56
+	# Stop stock Apache and prevent it from loading on system start
+	sudo apachectl stop
+	sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
+	
+	# Install Apache
+	brew install httpd24 --with-privileged-ports --with-http2
 
-	brew install php71
-	brew unlink php71
+	brew install php56
+	#brew unlink php56
+
+	#brew install php71
+	#brew unlink php71
+
+	# Add Apache launch daemon
+	sudo cp -v /usr/local/Cellar/httpd24/2.4.23_2/homebrew.mxcl.httpd24.plist /Library/LaunchDaemons
+	sudo chown -v root:wheel /Library/LaunchDaemons/homebrew.mxcl.httpd24.plist
+	sudo chmod -v 644 /Library/LaunchDaemons/homebrew.mxcl.httpd24.plist
+	sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.httpd24.plist
 
 	brew install brew-php-switcher
 
@@ -303,8 +317,22 @@ if [ "$(uname)" == "Darwin" ]; then
 	sudo bash -c 'echo "pass in proto tcp from any to any port 80" >> /etc/pf.conf'
 
 	# Load Apache config from Mackup
-	sudo mv /etc/apache2/httpd.conf /etc/apache2/httpd.bak
-	echo "Include /Users/karl/.apache2/httpd.conf" | sudo tee -a /etc/apache2/httpd.conf > /dev/null
+	#sudo mv /etc/apache2/httpd.conf /etc/apache2/httpd.bak
+	sudo cp $(brew --prefix)/etc/apache2/2.4/httpd.conf $(brew --prefix)/etc/apache2/2.4/httpd.conf.bak.orig
+	#echo "Include /Users/karl/.apache2/httpd.conf" | sudo tee -a /etc/apache2/httpd.conf > /dev/null
+
+	sed -i.bak "s|Listen 8080|Listen 80|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|User daemon|User karl|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|Group daemon|Group staff|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|you@example.com|karl.podger@primeordinal.com|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|#LoadModule vhost_alias_module libexec/mod_vhost_alias.so|LoadModule vhost_alias_module libexec/mod_vhost_alias.so|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|#LoadModule rewrite_module libexec/mod_rewrite.so|LoadModule rewrite_module libexec/mod_rewrite.so|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|AllowOverride none|AllowOverride all|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|/usr/local/var/www/htdocs|/Users/karl/Sites|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	sed -i.bak "s|DirectoryIndex index.html|DirectoryIndex index.html index.php|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	#sed -i.bak "s|#Include /usr/local/etc/apache2/2.4/extra/httpd-vhosts.conf|Include /Users/karl/.apache2/extra/httpd-vhosts.conf|g" $(brew --prefix)/etc/apache2/2.4/httpd.conf
+	echo "Include /Users/karl/.apache2/extra/httpd-vhosts.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
+	echo "Include /Users/karl/.apache2/other/php5.conf" | tee -a $(brew --prefix)/etc/apache2/2.4/httpd.conf > /dev/null
 
 	# Quick Look plugins, see https://github.com/sindresorhus/quick-look-plugins
 	brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
