@@ -207,6 +207,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install batik
 	#brew install boot2docker
 	brew install bradp/vv/vv
+	brew install coreutils
 	brew install dnsmasq
 	#brew install docker
 	#brew install docker-compose
