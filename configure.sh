@@ -1,6 +1,6 @@
 #!/bin/sh
 
-RUBY_VERSION=2.2.2
+RUBY_VERSION=2.3.1
 NODE_VERSION=5.0.0
 
 MACKUP_CONFIG_CORE="[storage]
@@ -178,15 +178,6 @@ if [ "$(uname)" == "Darwin" ]; then
 	# source updated .bash_profile file
 	source ~/.bash_profile
 
-	# Install defined Ruby version via rbenv
-	#rbenv install $RUBY_VERSION
-
-	# Set defined Ruby version as the default version
-	#rbenv global $RUBY_VERSION
-
-	# Check environment ruby is using the latest version installed by rbenv
-	#ruby -v
-
 	# Install pip package management system which is used to install and manage software packages written in Python.
 	sudo easy_install pip
 	#easy_install pip
@@ -234,13 +225,27 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install nodeenv
 	brew install openssl
 	brew install pkg-config
+	brew install rbenv
 	brew install readline
 	#brew install redis
+	brew install ruby-build
 	brew install shellcheck
 	brew install ssh-copy-id
 	brew install terraform
 	brew install ttf2eot
 	brew install wget
+
+	# Install defined Ruby version via rbenv
+	rbenv install $RUBY_VERSION
+
+	# Set defined Ruby version as the default version
+	rbenv global $RUBY_VERSION
+
+	# Installs shims for all Ruby executables known to rbenv
+	rbenv rehash
+
+	# Check environment ruby is using the latest version installed by rbenv
+	ruby -v
 
 	# Tap Apache
 	brew tap homebrew/apache
