@@ -382,6 +382,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install google-chrome
 	brew cask install google-chrome-canary
 	brew cask install google-cloud-sdk
+	brew cask install handbrake
+	brew cask install handbrakecli
 	brew cask install hyperdock
 	brew cask install iexplorer
 	brew cask install iterm2
@@ -414,6 +416,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	mas install 404010395 #TextWrangler
 	mas install 409203825 #Numbers
 	mas install 897118787 #Shazam
+	mas install 447513724 #Smart Converter
 
 	#echo "$MACKUP_CONFIG_CORE" > ~/.mackup.cfg
   	#echo "$MACKUP_CONFIG_SSH" > ~/.mackup/ssh.cfg
