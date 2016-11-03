@@ -261,8 +261,14 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Install Apache
 	brew install httpd24 --with-privileged-ports --with-http2
 
-	brew install php56
+	#brew install php56
 	#brew unlink php56
+
+	brew install php56 --with-apache
+	brew install php56-xdebug
+	brew install xdebug-osx
+
+	php -i | grep xdebug
 
 	#brew install php71
 	#brew unlink php71
@@ -276,6 +282,16 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install brew-php-switcher
 
 	brew-php-switcher 71
+
+# 	xdebug.remote_enable=1
+# 	xdebug.remote_host=127.0.0.1
+# 	xdebug.remote_connect_back=1    # Not safe for production servers
+# 	xdebug.remote_port=9000
+# 	xdebug.remote_handler=dbgp
+# 	xdebug.remote_mode=req
+# 	xdebug.remote_autostart=true
+
+	xdebug-toggle on
 
 	#brew install php56 --homebrew-apxs --with-apache --with-homebrew-curl --with-homebrew-openssl --with-phpdbg --with-tidy --without-snmp
 	#chmod -R ug+w /usr/local/Cellar/php56/5.6.9/lib/php
@@ -614,6 +630,7 @@ apm install minimap-pigments
 apm install minimap-selection
 apm install npm-install
 apm install php-cs-fixer
+apm install php-debug
 apm install pigments
 apm install polymer-snippets
 apm install project-manager
