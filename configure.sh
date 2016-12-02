@@ -190,7 +190,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	# Set Homebrew options
 
 	# Verify
-	brew update && brew upgrade --all
+	brew update && brew upgrade
 
 	# Install Homebrew formulae for command line applications
 	brew install autoconf
@@ -369,7 +369,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
 	# Create default site
 	mkdir -p ~/Sites/default_site
-	sudo bash -c 'echo "<html lang="en"><head><meta charset="utf-8" /><title>Default site</title></head><body><h1>Default site</h1></body></html>" >> /etc/pf.conf'
+	sudo bash -c 'echo "<html lang="en"><head><meta charset="utf-8" /><title>Default site</title></head><body><h1>Default site</h1></body></html>" >>  ~/Sites/default_site/index.html'
 
 	# Test and restart Apache
 	sudo apachectl -tS
