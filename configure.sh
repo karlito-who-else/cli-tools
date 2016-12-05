@@ -422,7 +422,9 @@ if [ "$(uname)" == "Darwin" ]; then
 	mas install 405580712 #StuffIt Expander
 	mas install 412448059 #ForkLift
 	mas install 463541543 #Gemini
-	mas install 411246225 #Caffeine
+# 	mas install 411246225 #Caffeine
+	mas install 937984704 #Amphetamine
+	mas install 882812218 #Owly
 	mas install 408981434 #iMovie
 	mas install 803453959 #Slack
 	mas install 409201541 #Pages
