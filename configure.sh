@@ -1,7 +1,7 @@
 #!/bin/sh
 
 RUBY_VERSION=2.3.1
-NODE_VERSION=5.0.0
+#NODE_VERSION=7.1.0
 
 MACKUP_CONFIG_CORE="[storage]
 engine = icloud"
@@ -196,12 +196,12 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install autoconf
 	brew install awscli
 	brew install batik
-	#brew install boot2docker
-	brew install bradp/vv/vv
+# 	brew install boot2docker
+# 	brew install bradp/vv/vv
 	brew install coreutils
 	brew install dnsmasq
-	#brew install docker
-	#brew install docker-compose
+# 	brew install docker
+# 	brew install docker-compose
 	brew install faac
 	brew install ffmpeg --with-faac --with-fdk-aac --with-ffplay --with-freetype --with-libass --with-libquvi --with-libvorbis --with-libvpx --with-opus --with-x265
 	brew install fontforge
@@ -211,7 +211,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install git-lfs
 	brew install gh
 	brew install gmp # ruby needs this, not sure why
-	#brew install gnu-getopt
+# 	brew install gnu-getopt
 	brew install gpg
 	brew install graphicsmagick
 	brew install imagemagick
@@ -219,15 +219,15 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew install mackup
 	brew install mariadb
 	brew install mas
-	#brew install mongodb
-	#brew install mysql
+# 	brew install mongodb
+# 	brew install mysql
 	brew install node
 	brew install nodeenv
 	brew install openssl
 	brew install pkg-config
 	brew install rbenv
 	brew install readline
-	#brew install redis
+# 	brew install redis
 	brew install ruby-build
 	brew install shellcheck
 	brew install ssh-copy-id
