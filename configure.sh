@@ -648,7 +648,7 @@ apm update
 #vagrant plugin install vagrant-hostsupdater
 #vagrant plugin install vagrant-triggers
 
-curl https://sdk.cloud.google.com | bash
+# curl https://sdk.cloud.google.com | bash
 
 # source updated .bash_profile file
 source ~/.bash_profile
