@@ -411,8 +411,8 @@ if [ "$(uname)" == "Darwin" ]; then
 	brew cask install tower
 	brew cask install transmit
 	#brew cask install virtualbox #ordering!
-	brew cask install vagrant
-	brew cask install vagrant-manager
+	#brew cask install vagrant
+	#brew cask install vagrant-manager
 	brew cask install vlc
 
 	mas install 497799835 #Xcode
@@ -667,7 +667,7 @@ apm list --installed --bare
 # echo -n "Further (manual) configuration:"
 
 # echo -n "https://itunes.apple.com/en/app/xcode/id497799835?mt=12"
-echo -n "https://github.com/leogopal/VVV-Dashboard"
+# echo -n "https://github.com/leogopal/VVV-Dashboard"
 
 # Restart shell, see https://cloud.google.com/sdk/#Quick_Start
 exec -l $SHELL
